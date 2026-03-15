@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CCNP ENCOR 350-401 — Full Exam Prep</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&family=Exo+2:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #070d14;
+    --surface: #0d1a26;
+    --card-front: #0a1520;
+    --card-back: #071220;
+    --accent: #00d4ff;
+    --accent2: #ff6b35;
+    --accent3: #39ff14;
+    --accent4: #bf5fff;
+    --accent5: #ffd700;
+    --accent6: #ff3366;
+    --text: #c8dde8;
+    --muted: #4a6070;
+    --border: #1a3040;
+    --glow: 0 0 20px rgba(0,212,255,0.3);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Exo 2', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 16px 40px;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 40% at 50% 0%, rgba(0,212,255,0.05) 0%, transparent 60%),
+      repeating-linear-gradient(0deg, transparent, transparent 59px, rgba(0,212,255,0.025) 60px),
+      repeating-linear-gradient(90deg, transparent, transparent 59px, rgba(0,212,255,0.025) 60px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 24px;
+    position: relative;
+    z-index: 1;
+  }
+  .logo-line {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 4px;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    opacity: 0.7;
+  }
+  h1 {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: clamp(26px, 5vw, 46px);
+    font-weight: 700;
+    letter-spacing: 2px;
+    background: linear-gradient(135deg, var(--accent), #fff 50%, var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-transform: uppercase;
+  }
+  .subtitle {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 3px;
+    margin-top: 4px;
+  }
+
+  /* Domain filter tabs */
+  .domain-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 10px;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+    max-width: 780px;
+  }
+  .domain-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    padding: 7px 14px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.2s;
+    clip-path: polygon(7px 0%, 100% 0%, calc(100% - 7px) 100%, 0% 100%);
+    white-space: nowrap;
+  }
+  .domain-btn:hover { opacity: 0.85; }
+  .domain-btn.active { font-weight: bold; }
+  .domain-btn[data-cat="all"].active          { border-color: var(--accent); color: var(--accent); background: rgba(0,212,255,0.1); }
+  .domain-btn[data-cat="Architecture"].active  { border-color: var(--accent5); color: var(--accent5); background: rgba(255,215,0,0.08); }
+  .domain-btn[data-cat="Virtualization"].active{ border-color: var(--accent4); color: var(--accent4); background: rgba(191,95,255,0.08); }
+  .domain-btn[data-cat="Infrastructure"].active{ border-color: var(--accent3); color: var(--accent3); background: rgba(57,255,20,0.07); }
+  .domain-btn[data-cat="Network Assurance"].active { border-color: var(--accent); color: var(--accent); background: rgba(0,212,255,0.08); }
+  .domain-btn[data-cat="Security"].active      { border-color: var(--accent2); color: var(--accent2); background: rgba(255,107,53,0.08); }
+  .domain-btn[data-cat="Automation"].active    { border-color: var(--accent6); color: var(--accent6); background: rgba(255,51,102,0.08); }
+  .domain-btn[data-cat="review"].active        { border-color: #aaa; color: #aaa; background: rgba(255,255,255,0.05); }
+  .domain-btn[data-cat="know"].active          { border-color: var(--accent3); color: var(--accent3); background: rgba(57,255,20,0.07); }
+
+  /* Domain legend */
+  .domain-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 18px;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+    max-width: 780px;
+  }
+  .legend-item {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 1px;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .legend-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* Progress */
+  .progress-bar {
+    width: 100%;
+    max-width: 740px;
+    height: 3px;
+    background: var(--border);
+    margin-bottom: 8px;
+    position: relative;
+    z-index: 1;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    transition: width 0.4s ease;
+    box-shadow: 0 0 8px var(--accent);
+  }
+  .progress-text {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    text-align: center;
+    margin-bottom: 18px;
+    letter-spacing: 2px;
+    position: relative;
+    z-index: 1;
+  }
+  .progress-text span { color: var(--accent); }
+
+  /* Card */
+  .card-scene {
+    width: 100%;
+    max-width: 740px;
+    height: 310px;
+    perspective: 1200px;
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+    margin-bottom: 16px;
+  }
+  .card-inner {
+    width: 100%; height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.55s cubic-bezier(0.4,0,0.2,1);
+  }
+  .card-inner.flipped { transform: rotateY(180deg); }
+  .card-face {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    padding: 26px 28px;
+    transition: border-color 0.3s;
+  }
+  .card-scene:hover .card-face { border-color: rgba(0,212,255,0.25); }
+  .card-front { background: var(--card-front); }
+  .card-back  { background: var(--card-back); transform: rotateY(180deg); }
+
+  .card-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .card-front .card-label { color: var(--accent); }
+  .card-back  .card-label { color: var(--accent2); }
+  .card-label::after { content: ''; flex: 1; height: 1px; background: currentColor; opacity: 0.25; }
+
+  .card-category {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    padding: 3px 10px;
+    border: 1px solid;
+    display: inline-block;
+    margin-bottom: 16px;
+    clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+    text-transform: uppercase;
+  }
+  .cat-Architecture   { color: var(--accent5);  border-color: var(--accent5);  background: rgba(255,215,0,0.06); }
+  .cat-Virtualization { color: var(--accent4);  border-color: var(--accent4);  background: rgba(191,95,255,0.06); }
+  .cat-Infrastructure { color: var(--accent3);  border-color: var(--accent3);  background: rgba(57,255,20,0.05); }
+  .cat-NetworkAssurance { color: var(--accent); border-color: var(--accent);   background: rgba(0,212,255,0.06); }
+  .cat-Security       { color: var(--accent2);  border-color: var(--accent2);  background: rgba(255,107,53,0.06); }
+  .cat-Automation     { color: var(--accent6);  border-color: var(--accent6);  background: rgba(255,51,102,0.06); }
+
+  .card-question {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: clamp(17px, 2.8vw, 22px);
+    font-weight: 600;
+    line-height: 1.4;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    color: #e8f4ff;
+  }
+  .card-answer {
+    font-family: 'Exo 2', sans-serif;
+    font-size: clamp(13px, 2vw, 15.5px);
+    font-weight: 300;
+    line-height: 1.65;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    color: #d0e8f0;
+  }
+  .flip-hint {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: var(--muted);
+    text-align: right;
+    margin-top: 10px;
+    text-transform: uppercase;
+  }
+  .card-face::before, .card-face::after {
+    content: ''; position: absolute; width: 14px; height: 14px;
+  }
+  .card-front::before { top:9px; left:9px;  border-top:2px solid var(--accent); border-left:2px solid var(--accent); }
+  .card-front::after  { bottom:9px; right:9px; border-bottom:2px solid var(--accent); border-right:2px solid var(--accent); }
+  .card-back::before  { top:9px; left:9px;  border-top:2px solid var(--accent2); border-left:2px solid var(--accent2); }
+  .card-back::after   { bottom:9px; right:9px; border-bottom:2px solid var(--accent2); border-right:2px solid var(--accent2); }
+
+  /* Mark + nav */
+  .mark-row {
+    display: flex; gap: 10px; margin-bottom: 12px;
+    position: relative; z-index: 1; justify-content: center;
+  }
+  .mark-btn {
+    background: transparent; border: 1px solid;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px; letter-spacing: 2px;
+    padding: 7px 18px; cursor: pointer;
+    text-transform: uppercase; transition: all 0.2s;
+  }
+  .mark-know   { border-color: var(--accent3); color: var(--accent3); }
+  .mark-know:hover { background: rgba(57,255,20,0.1); }
+  .mark-review { border-color: var(--accent2); color: var(--accent2); }
+  .mark-review:hover { background: rgba(255,107,53,0.1); }
+
+  .nav-row {
+    display: flex; gap: 10px; align-items: center;
+    position: relative; z-index: 1;
+    flex-wrap: wrap; justify-content: center;
+    margin-bottom: 22px;
+  }
+  .nav-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 13px; font-weight: 600;
+    letter-spacing: 2px; padding: 9px 22px;
+    cursor: pointer; text-transform: uppercase;
+    transition: all 0.2s;
+    clip-path: polygon(9px 0%, 100% 0%, calc(100% - 9px) 100%, 0% 100%);
+  }
+  .nav-btn:hover { border-color: var(--accent); color: var(--accent); box-shadow: var(--glow); }
+  .nav-btn:disabled { opacity: 0.25; cursor: not-allowed; }
+  .nav-btn.primary { background: rgba(0,212,255,0.1); border-color: var(--accent); color: var(--accent); }
+  .shuffle-btn { border-color: var(--accent2); color: var(--accent2); background: rgba(255,107,53,0.05); }
+  .shuffle-btn:hover { box-shadow: 0 0 18px rgba(255,107,53,0.3); border-color: var(--accent2); color: var(--accent2); }
+
+  /* Stats */
+  .stats-row {
+    display: flex; gap: 16px; flex-wrap: wrap;
+    justify-content: center; position: relative; z-index: 1;
+  }
+  .stat-box {
+    background: var(--surface); border: 1px solid var(--border);
+    padding: 10px 18px; text-align: center; min-width: 88px;
+    clip-path: polygon(7px 0%, 100% 0%, calc(100% - 7px) 100%, 0% 100%);
+  }
+  .stat-num  { font-family: 'Share Tech Mono', monospace; font-size: 20px; color: var(--accent); display: block; }
+  .stat-label{ font-family: 'Share Tech Mono', monospace; font-size: 8px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; }
+
+  /* Keyboard hint */
+  .kb-hint {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 9px; letter-spacing: 2px; color: var(--muted);
+    margin-top: 16px; text-align: center; position: relative; z-index: 1;
+    opacity: 0.6;
+  }
+
+  @keyframes cardPop {
+    0% { transform: scale(0.96); opacity: 0.6; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  .card-scene.animating { animation: cardPop 0.22s ease; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-line">// CISCO CERTIFIED NETWORK PROFESSIONAL //</div>
+  <h1>ENCOR 350-401</h1>
+  <div class="subtitle">COMPLETE EXAM PREP · ALL 6 DOMAINS · 240 CARDS</div>
+</header>
+
+<div class="domain-tabs" id="domainTabs">
+  <button class="domain-btn active" data-cat="all"              onclick="filterCards('all',this)">ALL (240)</button>
+  <button class="domain-btn"        data-cat="Architecture"     onclick="filterCards('Architecture',this)">Architecture</button>
+  <button class="domain-btn"        data-cat="Virtualization"   onclick="filterCards('Virtualization',this)">Virtualization</button>
+  <button class="domain-btn"        data-cat="Infrastructure"   onclick="filterCards('Infrastructure',this)">Infrastructure</button>
+  <button class="domain-btn"        data-cat="Network Assurance" onclick="filterCards('Network Assurance',this)">Net Assurance</button>
+  <button class="domain-btn"        data-cat="Security"         onclick="filterCards('Security',this)">Security</button>
+  <button class="domain-btn"        data-cat="Automation"       onclick="filterCards('Automation',this)">Automation</button>
+  <button class="domain-btn"        data-cat="review"           onclick="filterCards('review',this)">⚑ Review</button>
+  <button class="domain-btn"        data-cat="know"             onclick="filterCards('know',this)">✓ Know It</button>
+</div>
+
+<div class="domain-legend">
+  <span class="legend-item"><span class="legend-dot" style="background:var(--accent5)"></span>Architecture ~15%</span>
+  <span class="legend-item"><span class="legend-dot" style="background:var(--accent4)"></span>Virtualization ~10%</span>
+  <span class="legend-item"><span class="legend-dot" style="background:var(--accent3)"></span>Infrastructure ~30%</span>
+  <span class="legend-item"><span class="legend-dot" style="background:var(--accent)"></span>Net Assurance ~10%</span>
+  <span class="legend-item"><span class="legend-dot" style="background:var(--accent2)"></span>Security ~20%</span>
+  <span class="legend-item"><span class="legend-dot" style="background:var(--accent6)"></span>Automation ~15%</span>
+</div>
+
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+<div class="progress-text">CARD <span id="cardNum">1</span> OF <span id="cardTotal">240</span> &nbsp;|&nbsp; <span id="deckLabel">ALL CARDS</span></div>
+
+<div class="card-scene" id="cardScene" onclick="flipCard()">
+  <div class="card-inner" id="cardInner">
+    <div class="card-face card-front">
+      <div class="card-label">QUESTION</div>
+      <span class="card-category" id="cardCat">—</span>
+      <div class="card-question" id="cardQ">Loading...</div>
+      <div class="flip-hint">CLICK TO REVEAL ▶</div>
+    </div>
+    <div class="card-face card-back">
+      <div class="card-label">ANSWER</div>
+      <div class="card-answer" id="cardA">—</div>
+    </div>
+  </div>
+</div>
+
+<div class="mark-row">
+  <button class="mark-btn mark-know"   onclick="markCard('know')">✓ KNOW IT</button>
+  <button class="mark-btn mark-review" onclick="markCard('review')">⚑ REVIEW</button>
+</div>
+<div class="nav-row">
+  <button class="nav-btn" id="prevBtn" onclick="prevCard()">◀ PREV</button>
+  <button class="nav-btn primary"      onclick="flipCard()">FLIP</button>
+  <button class="nav-btn" id="nextBtn" onclick="nextCard()">NEXT ▶</button>
+  <button class="nav-btn shuffle-btn"  onclick="shuffleCards()">⇌ SHUFFLE</button>
+</div>
+
+<div class="stats-row">
+  <div class="stat-box"><span class="stat-num" id="statKnow">0</span><span class="stat-label">Know It</span></div>
+  <div class="stat-box"><span class="stat-num" id="statReview">0</span><span class="stat-label">Review</span></div>
+  <div class="stat-box"><span class="stat-num" id="statSeen">0</span><span class="stat-label">Seen</span></div>
+  <div class="stat-box"><span class="stat-num" id="statPct">0%</span><span class="stat-label">Progress</span></div>
+</div>
+<div class="kb-hint">KEYBOARD: ← → NAVIGATE &nbsp;|&nbsp; SPACE FLIP &nbsp;|&nbsp; K KNOW IT &nbsp;|&nbsp; R REVIEW</div>
+
+<script>
+const ALL_CARDS = [
+
+// ════════════════════════════════════════
+// ARCHITECTURE (40 cards)
+// ════════════════════════════════════════
+{cat:"Architecture", q:"What are the three layers of the traditional hierarchical network design model?", a:"Access layer: connects end devices. Distribution layer: aggregates access layer, applies policies and routing. Core layer: high-speed backbone providing fast transport between distribution blocks. Each layer has distinct roles for scalability and manageability."},
+{cat:"Architecture", q:"What is a collapsed core design and when is it used?", a:"A collapsed core merges the distribution and core layers into a single layer, used in smaller networks where a dedicated core is unnecessary. It reduces cost and complexity while still providing redundancy and Layer 3 routing between access blocks."},
+{cat:"Architecture", q:"What is the Cisco Enterprise Architecture model?", a:"Cisco's Enterprise Architecture divides the network into modular blocks: Campus (access/distribution/core), Data Center, WAN/Internet Edge, Branch, and Teleworker. Each module is independently designed and upgraded, improving scalability and troubleshooting."},
+{cat:"Architecture", q:"What is spine-leaf architecture and where is it used?", a:"Spine-leaf is a two-tier data center design where every leaf switch connects to every spine switch and no leaf connects to another leaf. It provides predictable latency, high bandwidth, and easy horizontal scaling. Used in modern data centers and SD-Access."},
+{cat:"Architecture", q:"What are the advantages of spine-leaf over traditional three-tier data center design?", a:"Spine-leaf provides: consistent one-hop latency between any two endpoints, easier scaling (add a leaf for more hosts or spine for bandwidth), no STP dependency, better east-west traffic handling, and equal-cost multipath (ECMP) across all spine links."},
+{cat:"Architecture", q:"What is SD-Access and what are its main components?", a:"SD-Access (Software-Defined Access) is Cisco's campus fabric solution using DNA Center as controller, ISE for policy, LISP as control plane, VXLAN as data plane, and CTS/SGT for policy enforcement. It automates provisioning, segmentation, and assurance."},
+{cat:"Architecture", q:"What is the underlay vs. overlay in SD-Access?", a:"The underlay is the physical IP-routed network (IS-IS based) providing connectivity. The overlay is the VXLAN-encapsulated fabric that carries user traffic across the underlay, decoupling logical topology from physical topology and enabling macro-segmentation."},
+{cat:"Architecture", q:"What is DNA Center and what role does it play in SD-Access?", a:"DNA Center is Cisco's centralized network management and controller platform. In SD-Access it provides GUI-based fabric provisioning, policy automation, network assurance (AI/ML analytics), and intent-based networking capabilities across the enterprise campus."},
+{cat:"Architecture", q:"What is intent-based networking (IBN)?", a:"IBN translates business intent into automated network policies. It uses a controller to continuously monitor the network against intended state, detect deviations, and either alert or auto-remediate. Cisco DNA Center is Cisco's IBN platform."},
+{cat:"Architecture", q:"What is the role of LISP in SD-Access fabric?", a:"LISP is the control plane protocol for SD-Access. The Map Server/Map Resolver (MS/MR) role is handled by fabric border and control plane nodes. It maps endpoint EIDs (MAC/IP) to fabric edge node RLOCs, enabling dynamic endpoint location and mobility."},
+{cat:"Architecture", q:"What is a fabric edge node in SD-Access?", a:"Fabric edge nodes are the access layer switches in an SD-Access fabric where endpoints connect. They register endpoint EIDs with the control plane node, encapsulate traffic in VXLAN for fabric transport, and enforce SGT-based segmentation policies."},
+{cat:"Architecture", q:"What is a fabric border node in SD-Access?", a:"Fabric border nodes connect the SD-Access fabric to external networks (WAN, internet, data center). They perform LISP map resolution for off-fabric destinations and translate between SGT policies inside the fabric and external routing/security domains."},
+{cat:"Architecture", q:"What is a fabric control plane node?", a:"The fabric control plane node runs the LISP Map Server and Map Resolver functions, maintaining the endpoint-to-location database for the fabric. All fabric edge nodes register their connected endpoints with it and query it for destination lookups."},
+{cat:"Architecture", q:"What is macro-segmentation vs. micro-segmentation?", a:"Macro-segmentation separates large groups (VNs/VRFs) using VXLAN VNIs to isolate broad traffic domains (e.g., corporate vs. guest). Micro-segmentation uses SGTs to enforce fine-grained policy between individual users/devices within the same VN."},
+{cat:"Architecture", q:"What is a Virtual Network (VN) in SD-Access?", a:"A VN is a macro-segmented group within the SD-Access fabric, implemented as a VRF mapped to a VXLAN L3 VNI. It provides complete routing isolation between groups (e.g., corporate, IoT, guest) without needing separate physical infrastructure."},
+{cat:"Architecture", q:"What is Cisco SD-WAN (formerly Viptela) architecture?", a:"Cisco SD-WAN uses four planes: vManage (management GUI), vSmart (centralized control plane, OMP), vBond (orchestration/NAT traversal), and vEdge/cEdge (data plane routers). OMP (Overlay Management Protocol) distributes routes and policies."},
+{cat:"Architecture", q:"What is OMP (Overlay Management Protocol) in SD-WAN?", a:"OMP is the control plane protocol of Cisco SD-WAN, running between vEdge/cEdge routers and the vSmart controller. It distributes routes, policies, and crypto keys across the overlay fabric, similar to BGP but centrally managed via vSmart."},
+{cat:"Architecture", q:"What is a vEdge vs. cEdge in Cisco SD-WAN?", a:"vEdge is Viptela's original hardware/software SD-WAN router. cEdge is a Cisco IOS XE router (e.g., ISR, ASR, CSR) running SD-WAN software. Both participate in the same SD-WAN fabric; cEdge enables SD-WAN on existing Cisco routing hardware."},
+{cat:"Architecture", q:"What is a WAN transport in Cisco SD-WAN and what types are supported?", a:"A WAN transport is a physical or logical connection to the SD-WAN overlay. Supported types include MPLS, internet (broadband), LTE/4G/5G, and MetroE. SD-WAN policies can route traffic across multiple transports simultaneously based on application SLA requirements."},
+{cat:"Architecture", q:"What is application-aware routing in SD-WAN?", a:"Application-aware routing continuously monitors WAN transport performance (latency, jitter, packet loss) and dynamically steers specific application traffic to the best-performing transport based on SLA policies defined in vManage, ensuring QoE for critical apps."},
+{cat:"Architecture", q:"What is a Zero Touch Provisioning (ZTP) in the context of Cisco SD-WAN?", a:"ZTP allows new SD-WAN routers to automatically discover vBond, authenticate, and download their configuration from vManage without manual CLI intervention. The device contacts a Cisco-hosted ZTP server using its serial number to find the vBond orchestrator."},
+{cat:"Architecture", q:"What is the difference between on-premises and cloud-hosted SD-WAN controllers?", a:"On-premises controllers run on customer-managed servers or VMs in the data center, giving full control over updates and data. Cloud-hosted controllers (Cisco-managed) reduce operational overhead and allow faster updates, but data traverses Cisco infrastructure."},
+{cat:"Architecture", q:"What is Cisco Meraki and what type of architecture does it use?", a:"Cisco Meraki is a cloud-managed networking platform (switches, APs, firewalls, cameras). All device management, configuration, and monitoring is done through the Meraki Dashboard. Devices phone home to Meraki cloud; traffic flows locally without backhauling to cloud."},
+{cat:"Architecture", q:"What is the difference between centralized and distributed control planes?", a:"Centralized control plane: a single controller (e.g., DNA Center, vSmart) makes all forwarding decisions and pushes them to devices. Distributed: each device runs its own control plane protocols (OSPF, BGP). Centralized simplifies management; distributed is more resilient to controller failure."},
+{cat:"Architecture", q:"What is high availability (HA) in campus network design?", a:"HA in campus design uses redundant links, switches (VSS/StackWise), redundant power, FHRP (HSRP/VRRP), fast convergence protocols (BFD, RSTP), and dual supervisors. The goal is sub-second failover and elimination of single points of failure."},
+{cat:"Architecture", q:"What is Cisco StackWise and StackWise Virtual?", a:"StackWise physically stacks multiple switches into one logical switch sharing a single management plane and control plane. StackWise Virtual (VSS for Catalyst 9K) logically combines two chassis switches over high-speed links, appearing as one switch to the rest of the network."},
+{cat:"Architecture", q:"What is VSS (Virtual Switching System)?", a:"VSS combines two Cisco Catalyst 6500/6800 switches into a single logical switch. It eliminates STP blocked links (all links are active via MEC), provides sub-second failover, and simplifies management with a single control plane and single management IP."},
+{cat:"Architecture", q:"What is the role of the data center in the enterprise architecture?", a:"The data center houses servers, storage, and applications that users and branches access. Key design considerations include: east-west traffic (server-to-server), redundancy (dual-homed servers), low latency (spine-leaf), and security (micro-segmentation, firewalls)."},
+{cat:"Architecture", q:"What is a DMZ and how is it positioned in enterprise architecture?", a:"A DMZ is a semi-trusted network segment between the internet-facing edge and the internal network. Public-facing servers (web, email, DNS) reside here. It uses dual firewall design (external FW + internal FW) to limit exposure if a DMZ host is compromised."},
+{cat:"Architecture", q:"What is the purpose of a WAN edge in enterprise architecture?", a:"The WAN edge connects the enterprise campus/branches to external networks (internet, MPLS, cloud). It typically runs edge firewalls, NAT, QoS, and WAN optimization. In SD-WAN, the WAN edge also manages transport selection and application steering."},
+{cat:"Architecture", q:"What is network segmentation and why is it important?", a:"Network segmentation divides the network into isolated zones using VLANs, VRFs, or SGTs, limiting the blast radius of breaches, improving performance, and simplifying compliance. It ensures that a compromised segment cannot freely reach other segments."},
+{cat:"Architecture", q:"What is a fabric in the context of modern networking?", a:"A fabric is a logical network overlay where endpoints can communicate regardless of physical location, with the network automating connectivity, segmentation, and policy. Examples: SD-Access campus fabric, ACI in data centers, SD-WAN overlay fabric."},
+{cat:"Architecture", q:"What is Cisco ACI (Application Centric Infrastructure)?", a:"ACI is Cisco's data center SDN solution using an APIC controller to define policy in terms of application endpoints and contracts (not VLANs/ACLs). It uses a spine-leaf fabric with VXLAN/EVPN and automates network policy based on application needs."},
+{cat:"Architecture", q:"What is the difference between a policy-based and a topology-based network approach?", a:"Topology-based networks define policy based on where devices are located (IP/VLAN). Policy-based networks (SD-Access, ACI) define policy based on identity/group, applying it regardless of physical location, enabling consistent policy for mobile users and devices."},
+{cat:"Architecture", q:"What is APIC in Cisco ACI?", a:"APIC (Application Policy Infrastructure Controller) is the centralized controller for Cisco ACI. It provides a single point of automation and policy management for the ACI fabric, translating application requirements into network configurations pushed to spine and leaf switches."},
+{cat:"Architecture", q:"What is multi-site architecture in Cisco ACI?", a:"Multi-site ACI connects multiple geographically separated ACI fabrics via an inter-site network (ISN) using VXLAN/BGP-EVPN. A Multi-Site Orchestrator (MSO/NDO) manages policy consistently across all sites, enabling stretched application deployments."},
+{cat:"Architecture", q:"What is the difference between north-south and east-west traffic in a data center?", a:"North-south traffic flows between clients and servers (in/out of the data center). East-west traffic flows between servers within the data center (server-to-server). Modern workloads are predominantly east-west, driving the adoption of spine-leaf architectures."},
+{cat:"Architecture", q:"What is an overlay network?", a:"An overlay network is a logical network built on top of a physical underlay, using encapsulation (VXLAN, GRE, IPsec) to create virtual tunnels. It decouples logical topology from physical topology, enabling flexible addressing, mobility, and multi-tenancy."},
+{cat:"Architecture", q:"What is a greenfield vs. brownfield deployment?", a:"Greenfield: a new deployment on fresh infrastructure with no existing network to consider—easier to implement full SD-Access or ACI. Brownfield: integrating new solutions into an existing traditional network, requiring migration planning, coexistence, and backward compatibility."},
+{cat:"Architecture", q:"What is the purpose of a network access control (NAC) solution in campus architecture?", a:"NAC authenticates and authorizes devices before granting network access, enforcing posture compliance. In Cisco architecture, ISE serves as the NAC engine, integrating with 802.1X on switches/WLCs to assign users to correct VLANs/SGTs based on identity and device state."},
+
+// ════════════════════════════════════════
+// VIRTUALIZATION (35 cards)
+// ════════════════════════════════════════
+{cat:"Virtualization", q:"What is network virtualization and why is it important?", a:"Network virtualization abstracts physical network resources into logical, software-defined instances. It enables multi-tenancy, workload mobility, resource optimization, and faster provisioning while reducing dependency on specific hardware vendors."},
+{cat:"Virtualization", q:"What is a hypervisor and what are the two types?", a:"A hypervisor is software that creates and manages virtual machines (VMs). Type 1 (bare-metal): runs directly on hardware (VMware ESXi, Microsoft Hyper-V, KVM). Type 2 (hosted): runs on a host OS (VirtualBox, VMware Workstation). Type 1 is used in production data centers."},
+{cat:"Virtualization", q:"What is the difference between a VM and a container?", a:"A VM virtualizes an entire OS including kernel, requiring a full OS installation per VM (GBs). A container shares the host OS kernel and only packages the application and its dependencies (MBs), making containers faster to start, lighter weight, and more portable."},
+{cat:"Virtualization", q:"What is Docker and how does it relate to containers?", a:"Docker is an open-source platform for building, shipping, and running containers. It packages an application and its dependencies into a container image. Docker uses Linux namespaces and cgroups for isolation. Images are stored in registries like Docker Hub."},
+{cat:"Virtualization", q:"What is Kubernetes (K8s) and what problem does it solve?", a:"Kubernetes is an open-source container orchestration system that automates deployment, scaling, load balancing, self-healing, and rolling updates of containerized applications across a cluster of nodes. It solves the challenge of managing containers at scale."},
+{cat:"Virtualization", q:"What is NFV (Network Function Virtualization)?", a:"NFV replaces dedicated network appliances (firewalls, load balancers, routers) with software running on commodity x86 servers or VMs. This reduces hardware costs, enables faster service deployment, and allows dynamic scaling of network functions."},
+{cat:"Virtualization", q:"What is a VNF (Virtual Network Function)?", a:"A VNF is a software implementation of a network function that runs on a VM or container instead of dedicated hardware. Examples: virtual router (CSR1000v), virtual firewall (ASAv, FTDv), virtual load balancer. VNFs are managed by NFV orchestration platforms."},
+{cat:"Virtualization", q:"What is NFVI (NFV Infrastructure)?", a:"NFVI is the hardware and software that provides the environment where VNFs run. It includes compute (servers), storage, networking, and the virtualization layer (hypervisor). It is the foundation layer of the NFV architecture below the VNF layer."},
+{cat:"Virtualization", q:"What is MANO in NFV architecture?", a:"MANO (Management and Orchestration) is the NFV framework layer responsible for orchestrating VNFs and NFVI resources. It comprises: NFVO (orchestrator), VNFM (VNF manager), and VIM (Virtualized Infrastructure Manager, e.g., OpenStack)."},
+{cat:"Virtualization", q:"What is SDN (Software-Defined Networking)?", a:"SDN decouples the control plane from the data plane, centralizing network intelligence in a software controller. The controller communicates with network devices via southbound APIs (OpenFlow, NETCONF). Applications interact via northbound APIs (REST). Enables programmability and automation."},
+{cat:"Virtualization", q:"What is OpenFlow in SDN?", a:"OpenFlow is a southbound protocol that allows an SDN controller to directly program flow tables in network switches and routers. The controller installs flow entries specifying match criteria and actions (forward, drop, modify), replacing traditional distributed control plane decisions."},
+{cat:"Virtualization", q:"What are northbound and southbound APIs in SDN?", a:"Southbound APIs (OpenFlow, NETCONF, RESTCONF, gRPC) allow the controller to communicate with and program network devices. Northbound APIs (REST/JSON, YANG) allow applications and orchestration systems to communicate with the controller to request network services."},
+{cat:"Virtualization", q:"What is a vSwitch (virtual switch) and how does it work?", a:"A vSwitch (e.g., VMware vSphere Standard/Distributed Switch, Cisco Nexus 1000V) is a software switch running inside a hypervisor, forwarding traffic between VMs on the same host and connecting VMs to physical network uplinks. It supports VLANs, QoS, and security policies."},
+{cat:"Virtualization", q:"What is the Cisco Nexus 1000V?", a:"The Nexus 1000V is a Cisco virtual switch that runs inside VMware ESXi hypervisors. It extends Cisco network policy (port profiles, security groups, QoS) into the VM layer, giving network teams visibility and control of VM-to-VM traffic without involving the server team."},
+{cat:"Virtualization", q:"What is VRF and how does it enable virtualization?", a:"VRF (Virtual Routing and Forwarding) creates multiple independent routing table instances on a single physical router. Each VRF has its own routing, forwarding table, and interfaces, enabling complete Layer 3 isolation between tenants without separate hardware."},
+{cat:"Virtualization", q:"What is VLAN and how does it virtualize the network at Layer 2?", a:"A VLAN logically segments a physical switch into multiple broadcast domains. Each VLAN acts as a separate LAN, isolating traffic without requiring separate physical switches. VLANs are carried over trunks using IEEE 802.1Q tagging."},
+{cat:"Virtualization", q:"What is 802.1Q trunking?", a:"802.1Q is the IEEE standard for VLAN tagging on trunk links. It inserts a 4-byte tag into the Ethernet frame header containing the VLAN ID (12 bits, supporting 4096 VLANs). Trunk ports carry traffic for multiple VLANs simultaneously between switches."},
+{cat:"Virtualization", q:"What is VXLAN and how does it extend Layer 2 virtualization?", a:"VXLAN (Virtual Extensible LAN) encapsulates Layer 2 Ethernet frames in UDP packets (port 4789) to carry them over a Layer 3 network. It uses a 24-bit VNI (VXLAN Network Identifier) supporting ~16 million segments, vastly exceeding the 4096 VLAN limit."},
+{cat:"Virtualization", q:"What is EVPN (Ethernet VPN) and its role in VXLAN?", a:"EVPN is a BGP address family used as the control plane for VXLAN. It distributes MAC/IP address information between VTEPs, enabling efficient and scalable L2/L3 overlay networks. EVPN replaces multicast-based MAC learning with BGP-based control plane learning."},
+{cat:"Virtualization", q:"What is the difference between ingress replication and multicast for BUM traffic in VXLAN?", a:"BUM (Broadcast, Unknown unicast, Multicast) traffic must be flooded in VXLAN. Ingress replication: the originating VTEP unicasts a copy to each remote VTEP (head-end replication, no multicast needed). Multicast: VTEPs join multicast groups mapped to VNIs. Ingress replication is simpler; multicast is more efficient at large scale."},
+{cat:"Virtualization", q:"What is GRE (Generic Routing Encapsulation) tunneling?", a:"GRE encapsulates any Layer 3 packet inside an IP header to create a virtual point-to-point tunnel. It supports multicast and non-IP protocols. Common for DMVPN spokes-to-hub connectivity. Drawback: no encryption (use with IPsec for security)."},
+{cat:"Virtualization", q:"What is an IPsec VTI (Virtual Tunnel Interface)?", a:"An IPsec VTI is a virtual routed interface bound to an IPsec tunnel, simplifying configuration compared to crypto map-based IPsec. Traffic routed to the VTI is automatically encrypted by IPsec. Supports dynamic routing protocols over the encrypted tunnel."},
+{cat:"Virtualization", q:"What is MPLS TE (Traffic Engineering) and how does it differ from standard MPLS?", a:"MPLS TE uses RSVP-TE to establish label-switched paths (LSPs) along explicit routes that may differ from the IGP shortest path. It allows network operators to route traffic across specific paths for load balancing, bandwidth reservation, and fast reroute (FRR)."},
+{cat:"Virtualization", q:"What is segment routing (SR)?", a:"Segment routing is a source routing architecture where the path through the network is encoded in the packet header as an ordered list of segments. It simplifies MPLS TE by eliminating per-path state in intermediate nodes, reducing signaling complexity (no RSVP needed)."},
+{cat:"Virtualization", q:"What is SR-MPLS vs. SRv6?", a:"SR-MPLS uses MPLS labels as segment identifiers, working with existing MPLS hardware. SRv6 uses 128-bit IPv6 addresses as segment identifiers embedded in an IPv6 Segment Routing Header (SRH), enabling native IPv6 transport with segment routing semantics and richer programmability."},
+{cat:"Virtualization", q:"What is server virtualization's impact on network design?", a:"Server virtualization increases VM density per physical server and enables VM mobility (vMotion/Live Migration). Networks must support: VM mobility without IP change (L2 extension), east-west traffic between VMs, and per-VM policies. This drove adoption of VXLAN, EVPN, and SDN."},
+{cat:"Virtualization", q:"What is vMotion and what network requirements does it have?", a:"vMotion (VMware) live-migrates running VMs between ESXi hosts without downtime. It requires: a dedicated high-bandwidth low-latency vMotion network, L2 adjacency between source and destination (or L2 stretch via VXLAN), and consistent port groups/VLANs on both hosts."},
+{cat:"Virtualization", q:"What is the Cisco CSR 1000v?", a:"The CSR 1000v (Cloud Services Router) is a virtual IOS XE router running as a VM. It supports full IOS XE features (BGP, OSPF, NAT, IPsec, QoS) on commodity x86 hardware, enabling consistent network functionality in virtualized and cloud environments."},
+{cat:"Virtualization", q:"What is OpenStack and how does it relate to NFV?", a:"OpenStack is an open-source cloud platform that serves as a VIM (Virtualized Infrastructure Manager) in NFV architecture. It manages compute (Nova), networking (Neutron), and storage resources, providing the infrastructure on which VNFs are instantiated and managed."},
+{cat:"Virtualization", q:"What is Cisco NFVIS (Network Function Virtualization Infrastructure Software)?", a:"NFVIS is Cisco's hypervisor platform for deploying VNFs on Cisco ENCS (Enterprise Network Compute System) hardware. It provides a lightweight KVM-based hypervisor with a REST API for orchestrating VNFs at branch locations as part of NFV deployments."},
+{cat:"Virtualization", q:"What is a service chain in NFV?", a:"Service chaining sequences multiple VNFs (e.g., firewall → IPS → load balancer) so traffic passes through each in order. NFV orchestration platforms (e.g., Cisco NSO, OpenStack Tacker) automate service chain creation and management without manual routing configuration."},
+{cat:"Virtualization", q:"What is multi-tenancy in network virtualization?", a:"Multi-tenancy allows multiple independent tenants to share the same physical network infrastructure while maintaining complete logical isolation between them. Implemented using VRFs, VLANs, VXLANs, or SD-Access VNs, each tenant sees only its own resources."},
+{cat:"Virtualization", q:"What is the difference between L2VPN and L3VPN in MPLS?", a:"L2VPN (e.g., VPLS, EoMPLS) provides Layer 2 connectivity between sites over an MPLS backbone, extending Ethernet frames transparently. L3VPN (MPLS VPN with VRFs) provides Layer 3 routing between customer sites with the provider performing IP routing per VRF."},
+{cat:"Virtualization", q:"What is VPLS (Virtual Private LAN Service)?", a:"VPLS is an L2VPN service that emulates a LAN across an MPLS/IP backbone, connecting multiple sites as if they were on the same Ethernet segment. It uses pseudowires between PE routers with a full-mesh of tunnels to flood unknown unicast and broadcast traffic."},
+{cat:"Virtualization", q:"What is a pseudowire in L2VPN?", a:"A pseudowire is an emulated point-to-point Layer 2 circuit (Ethernet, Frame Relay, ATM) carried over an MPLS or IP backbone. It provides transparent L2 transport between two PE routers, making the provider backbone appear as a direct L2 link to connected CE devices."},
+
+// ════════════════════════════════════════
+// INFRASTRUCTURE (55 cards)
+// ════════════════════════════════════════
+{cat:"Infrastructure", q:"What is the purpose of OSPF DR/BDR election on multi-access networks?", a:"DR and BDR reduce OSPF adjacency overhead on multi-access segments. All other routers (DROther) form Full adjacencies only with DR/BDR, not each other. This reduces LSA flooding from O(n²) to O(n) on shared segments like Ethernet."},
+{cat:"Infrastructure", q:"What are the five OSPF network types and their DR/BDR behavior?", a:"Point-to-Point (no DR), Broadcast (DR/BDR elected), NBMA (DR/BDR elected, manual neighbors), Point-to-Multipoint (no DR, each link treated as P2P), Point-to-Multipoint Non-Broadcast (no DR, manual neighbors). Network type must match on both ends of a link."},
+{cat:"Infrastructure", q:"What is the difference between OSPF stub, totally stubby, and NSSA areas?", a:"Stub: blocks Type 5 external LSAs, uses default route. Totally Stubby (Cisco): blocks Type 3, 4, and 5 LSAs, uses default route—smallest LSDB. NSSA: allows external routes via Type 7 LSAs while blocking Type 5, used when an ASBR is inside the stub area."},
+{cat:"Infrastructure", q:"What is BGP route reflector and why is it used?", a:"A route reflector (RR) allows iBGP peers to re-advertise routes received from one iBGP client to other iBGP clients, solving the iBGP full-mesh requirement. Without RR, every iBGP router must peer with every other, which is O(n²) and unscalable."},
+{cat:"Infrastructure", q:"Explain BGP AS_PATH attribute and its use in loop prevention.", a:"AS_PATH lists all ASes a route has traversed. When a router receives a route containing its own AS number in the path, it discards it, preventing routing loops. eBGP prepends its AS; iBGP does not add to AS_PATH. Longer AS_PATH is less preferred in best-path selection."},
+{cat:"Infrastructure", q:"What is BGP LOCAL_PREF and how does it affect routing?", a:"LOCAL_PREF is a well-known discretionary iBGP attribute influencing outbound path selection within an AS. Higher value is preferred. Default is 100. It is not propagated to eBGP peers. Used to prefer one exit point over another for traffic leaving the AS."},
+{cat:"Infrastructure", q:"What is EIGRP Feasibility Condition (FC) and why does it matter?", a:"The FC is satisfied when a neighbor's Reported Distance (RD) < the router's current Feasibility Distance (FD). Routes meeting the FC qualify as Feasible Successors (loop-free backup paths). EIGRP guarantees loop-free alternates because FC mathematically proves no downstream neighbor is closer to the destination."},
+{cat:"Infrastructure", q:"What is EIGRP DUAL (Diffusing Update Algorithm)?", a:"DUAL is EIGRP's convergence algorithm that guarantees loop-free, consistent routing throughout the network at all times. It selects a Successor (primary path, lowest FD) and Feasible Successors (pre-computed backup paths). If Successor fails and no FS exists, DUAL sends queries to neighbors to find a new path."},
+{cat:"Infrastructure", q:"What is STP root bridge election?", a:"The switch with the lowest Bridge ID (priority + MAC address) becomes root bridge. Default priority is 32768 (plus VLAN ID in PVST+). All paths are calculated from root's perspective. Use 'spanning-tree vlan X priority Y' to control root election. Cisco recommends configuring root explicitly."},
+{cat:"Infrastructure", q:"What is the difference between RSTP port roles and states?", a:"RSTP roles: Root port (best path to root), Designated port (best port on each segment toward root), Alternate (backup root path), Backup (backup designated). States: Discarding, Learning, Forwarding. RSTP eliminates Listening/Blocking/Disabled states of classic STP for faster convergence (sub-second vs 30–50 sec)."},
+{cat:"Infrastructure", q:"What is MSTP (802.1s)?", a:"MSTP maps multiple VLANs to a reduced number of spanning tree instances (MSTIs), reducing overhead vs PVST+. All MST switches share a common MST region config (name, revision, VLAN-instance mapping). IST (Internal Spanning Tree, instance 0) connects the region to the rest of the network."},
+{cat:"Infrastructure", q:"How does HSRP work and what are its states?", a:"HSRP provides first-hop redundancy using a virtual IP/MAC shared between Active and Standby routers. States: Initial → Learn → Listen → Speak → Standby → Active. Active router forwards traffic; Standby monitors via hellos (default 3s, hold 10s) and takes over if Active fails. Priority (default 100) + preempt determines Active."},
+{cat:"Infrastructure", q:"What is the difference between HSRP, VRRP, and GLBP?", a:"HSRP: Cisco proprietary, one active, one standby. VRRP (RFC 5798): open standard, one master, multiple backup, master can own virtual IP. GLBP: Cisco proprietary, multiple active forwarders simultaneously sharing load via per-host ARP responses, providing both redundancy and load balancing."},
+{cat:"Infrastructure", q:"What is LISP (Locator/ID Separation Protocol)?", a:"LISP separates endpoint identity (EID, who) from routing location (RLOC, where). EIDs are registered with a Map Server; routers query the Map Resolver to find RLOC for a destination EID. Used in SD-Access as the control plane for endpoint tracking and mobility."},
+{cat:"Infrastructure", q:"What are the three planes of a network device?", a:"Data plane (forwarding): makes per-packet forwarding decisions using FIB/CAM, handled in hardware (ASIC). Control plane: runs routing/switching protocols (OSPF, BGP, STP) to build tables, runs in software/CPU. Management plane: provides device access for configuration and monitoring (SSH, SNMP, NTP)."},
+{cat:"Infrastructure", q:"What is VXLAN and what problem does it solve?", a:"VXLAN encapsulates L2 frames in UDP/IP (port 4789) to extend L2 segments across L3 networks. Uses 24-bit VNI for ~16M virtual networks vs VLAN's 4096 limit. Enables VM mobility across data centers and decouples logical from physical topology in overlays."},
+{cat:"Infrastructure", q:"What is a VTEP (VXLAN Tunnel Endpoint)?", a:"A VTEP originates and terminates VXLAN tunnels. It encapsulates outgoing L2 frames with VXLAN+UDP+IP+Ethernet headers and strips headers on incoming VXLAN packets. VTEPs can be implemented in hardware (switches) or software (hypervisor vSwitch)."},
+{cat:"Infrastructure", q:"What are the QoS tools and their order of operation?", a:"Classification (match traffic) → Marking (set DSCP/CoS) → Policing/Shaping (rate limiting) → Congestion Avoidance (WRED) → Queuing/Scheduling (CBWFQ, LLQ) → Link Efficiency (compression, fragmentation). Applied via MQC (Modular QoS CLI): class-map → policy-map → service-policy."},
+{cat:"Infrastructure", q:"What is LLQ (Low Latency Queuing)?", a:"LLQ adds a strict-priority queue to CBWFQ. Traffic in the priority queue (e.g., voice) is always serviced first before other queues, providing guaranteed low latency and jitter. Configured with 'priority' keyword in policy-map class. Police the priority queue to prevent starvation of other classes."},
+{cat:"Infrastructure", q:"What is WRED (Weighted Random Early Detection)?", a:"WRED is a congestion avoidance mechanism that randomly drops packets before a queue fills completely, providing early notification to TCP senders to slow transmission. It differentiates dropping probabilities by DSCP/IP Precedence, protecting higher-priority traffic from early drops."},
+{cat:"Infrastructure", q:"What is MPLS and how does label switching work?", a:"MPLS assigns short labels to packets at the ingress LER. Intermediate LSRs swap labels and forward based on the LFIB (Label Forwarding Information Base) without IP lookup. Egress LER pops the label and delivers the original packet. Labels are stacked: inner = VPN label, outer = transport label."},
+{cat:"Infrastructure", q:"What is the difference between CE, PE, and P routers in MPLS L3VPN?", a:"CE: Customer Edge, runs customer routing protocol (OSPF, BGP) with PE. PE: Provider Edge, maintains per-customer VRFs, imports/exports routes via MP-BGP VPNv4, performs label operations. P: Provider core, only does label switching—no VRF knowledge, improving scalability."},
+{cat:"Infrastructure", q:"What is a VRF and its components?", a:"A VRF consists of: a separate routing table (RIB), a separate FIB, a set of interfaces assigned to the VRF, and import/export Route Targets (RTs) for MPLS VPN. VRFs provide complete L3 isolation between tenants on the same physical router."},
+{cat:"Infrastructure", q:"What is DMVPN and what are its three phases?", a:"DMVPN uses GRE over IPsec with NHRP for scalable hub-spoke VPNs. Phase 1: all traffic via hub, no spoke-to-spoke tunnels. Phase 2: spoke-to-spoke tunnels built on-demand via NHRP, but no summarization at hub. Phase 3: spoke-to-spoke + NHRP redirect + hub summarization supported."},
+{cat:"Infrastructure", q:"What is PIM Sparse Mode (PIM-SM) and how does it build trees?", a:"PIM-SM uses explicit joins toward the RP (Rendezvous Point) to build a Shared Tree (*,G) for initial multicast delivery. When traffic exceeds a threshold, the last-hop router triggers SPT switchover, building a Shortest Path Tree (S,G) directly to the source for efficiency."},
+{cat:"Infrastructure", q:"What is Anycast RP and why is it used?", a:"Anycast RP allows multiple routers to share the same RP address (announced via IGP with equal-cost routes), providing RP redundancy and load distribution. PIM MSDP (Multicast Source Discovery Protocol) is used between Anycast RP routers to synchronize active source information."},
+{cat:"Infrastructure", q:"What does the 'ip helper-address' command do?", a:"It configures a router interface to relay DHCP broadcast requests to a unicast DHCP server on a remote subnet. It converts client broadcast DHCP Discovers/Requests to unicast packets destined for the server IP, enabling centralized DHCP across multiple subnets."},
+{cat:"Infrastructure", q:"What is DHCPv6 and what are its modes?", a:"DHCPv6 provides IPv6 address and option assignment. Stateful DHCPv6: server assigns full IPv6 addresses + options (like DHCPv4). Stateless DHCPv6: hosts self-configure addresses via SLAAC; DHCPv6 provides only options (DNS, domain name). Mode signaled by RA flags (M=managed, O=other)."},
+{cat:"Infrastructure", q:"What is OSPFv3?", a:"OSPFv3 is the IPv6-adapted OSPF, running directly over IPv6 using link-local addresses for hello/LSA exchanges. It introduces new LSA types (Type 8: Link LSA for link-local prefixes, Type 9: Intra-Area-Prefix LSA). In IOS XE, OSPFv3 also supports IPv4 via address families."},
+{cat:"Infrastructure", q:"What is NAT overload (PAT)?", a:"PAT maps multiple inside private IPs to a single outside public IP using unique source port numbers per session. The NAT table tracks (inside local IP:port) → (inside global IP:unique port). Allows thousands of hosts to share one public IP. Default behavior for most home/SMB NAT."},
+{cat:"Infrastructure", q:"What is the purpose of CDP and what does it advertise?", a:"CDP (Cisco Discovery Protocol) is a L2 proprietary protocol sending multicast hellos (every 60s, hold 180s) to directly connected Cisco devices. Advertises: device ID, IP addresses, platform, capabilities (router/switch/phone), IOS version, VTP domain, native VLAN, duplex. Used for topology discovery and troubleshooting."},
+{cat:"Infrastructure", q:"What is NTP and what are its stratum levels?", a:"NTP synchronizes clocks across a network. Stratum 0: reference clock (GPS/atomic). Stratum 1: directly connected to stratum 0. Stratum 2–15: progressively further from reference. Stratum 16 = unsynchronized. NTP uses UDP port 123. Use 'ntp authenticate' and 'ntp trusted-key' for security."},
+{cat:"Infrastructure", q:"What is EtherChannel and what protocols support it?", a:"EtherChannel bundles 2–8 parallel links into one logical link, providing aggregated bandwidth and redundancy. Negotiation protocols: LACP (IEEE 802.3ad, open standard, preferred) and PAgP (Cisco proprietary). Static mode ('on') forces the channel without negotiation. All ports must match speed, duplex, VLAN, and trunk settings."},
+{cat:"Infrastructure", q:"What is CEF (Cisco Express Forwarding)?", a:"CEF is Cisco's primary L3 forwarding mechanism. It pre-computes the FIB (Forwarding Information Base, derived from RIB) and Adjacency Table (L2 rewrite info from ARP). Packets are forwarded in hardware/interrupt context using FIB+Adjacency, eliminating per-packet routing table lookups and process-switched overhead."},
+{cat:"Infrastructure", q:"What is an SVI (Switched Virtual Interface)?", a:"An SVI is a virtual L3 interface on a multilayer switch representing a VLAN. It provides inter-VLAN routing (traffic routed between VLANs via SVIs) and can serve as the default gateway for hosts in that VLAN. It is also used as the in-band management interface."},
+{cat:"Infrastructure", q:"What is BFD (Bidirectional Forwarding Detection)?", a:"BFD is a lightweight hello mechanism (sub-second, configurable to 50ms+) detecting path failures between adjacent forwarding engines. It notifies routing protocols (OSPF, BGP, EIGRP) of failures faster than protocol hello timers, enabling sub-second convergence. Can run in asynchronous or echo mode."},
+{cat:"Infrastructure", q:"What is ECMP and how does CEF implement load balancing?", a:"ECMP installs multiple equal-cost routes in the FIB. CEF load balances using a hash of packet fields. Per-destination: hashes src/dst IP—same flow always uses same path (default, prevents reordering). Per-packet: round-robin across paths (can cause reordering). Per-flow: hashes src/dst IP+port—better distribution."},
+{cat:"Infrastructure", q:"What is the difference between routed ports and SVIs on a multilayer switch?", a:"Routed port: a physical switch port configured with 'no switchport', assigned an IP address, operates at L3, runs routing protocols. SVI: a virtual L3 interface for a VLAN providing inter-VLAN routing and management. Routed ports are point-to-point; SVIs represent an entire VLAN."},
+{cat:"Infrastructure", q:"What is IGMP and IGMP snooping?", a:"IGMP (Internet Group Management Protocol) allows hosts to join/leave multicast groups on a LAN. IGMPv2: explicit leave. IGMPv3: source-specific joins (used with SSM). IGMP snooping: switch inspects IGMP messages to build a multicast forwarding table, sending multicast only to interested ports instead of flooding the VLAN."},
+{cat:"Infrastructure", q:"What is SD-WAN Zero Touch Provisioning (ZTP) workflow?", a:"New SD-WAN device powers on → contacts Cisco ZTP server (ztp.viptela.com) via DHCP/DNS using serial number → ZTP redirects it to the organization's vBond → vBond authenticates device → device registers with vSmart (receives OMP routes/policy) and vManage (receives full config). Fully automated, no manual CLI needed."},
+{cat:"Infrastructure", q:"What is the BGP best-path selection order?", a:"In order: 1) Highest Weight (Cisco local), 2) Highest LOCAL_PREF, 3) Locally originated, 4) Shortest AS_PATH, 5) Lowest Origin (IGP<EGP<Incomplete), 6) Lowest MED (same AS), 7) eBGP over iBGP, 8) Lowest IGP metric to next-hop, 9) Oldest eBGP route, 10) Lowest Router ID, 11) Lowest neighbor IP."},
+{cat:"Infrastructure", q:"What is route redistribution and what are its risks?", a:"Route redistribution imports routes from one routing protocol into another. Risks: routing loops (mutual redistribution between two protocols without proper filtering can create sub-optimal paths or loops), metric translation issues (each protocol uses different metrics), and route feedback (redistributed routes re-entering the original protocol)."},
+{cat:"Infrastructure", q:"What is a route map and how is it used?", a:"A route map is an ordered list of match/set clauses used in redistribution, BGP policy, and NAT. Match criteria: ACL, prefix-list, AS-path, community. Set actions: metric, next-hop, local-preference, community, tag. Unmatched routes fall to implicit deny if no default permit is configured."},
+{cat:"Infrastructure", q:"What is the difference between GRE, IPsec, and GRE over IPsec?", a:"GRE: L3 tunneling, supports multicast/routing protocols, no encryption. IPsec: encryption + authentication, no multicast support natively. GRE over IPsec: combines both—GRE provides tunnel for routing protocols/multicast, IPsec provides encryption. Used in DMVPN for secure dynamic tunnels."},
+{cat:"Infrastructure", q:"What is IPv6 transition mechanism 6to4 and its purpose?", a:"6to4 automatically encapsulates IPv6 packets in IPv4 (protocol 41) using 2002::/16 prefix. The embedded IPv4 address forms part of the IPv6 prefix. Used as a transition mechanism to carry IPv6 traffic over IPv4-only networks without manual tunnel configuration. Deprecated in favor of native IPv6 or other mechanisms."},
+{cat:"Infrastructure", q:"What is IPv6 stateless address autoconfiguration (SLAAC)?", a:"SLAAC (RFC 4862) allows IPv6 hosts to automatically configure their own address using: RA prefix (64-bit) + EUI-64 interface ID (from MAC) or random stable address (privacy extensions). Hosts also get default gateway from RA. No DHCP server needed for address assignment."},
+{cat:"Infrastructure", q:"What is the purpose of IPv6 Neighbor Discovery Protocol (NDP)?", a:"NDP replaces ARP in IPv6. Functions: Router Discovery (RS/RA), Neighbor Discovery (NS/NA for address resolution like ARP), Stateless Address Autoconfiguration (SLAAC), Duplicate Address Detection (DAD), and Redirect. Uses ICMPv6 messages. NS/NA uses solicited-node multicast addresses."},
+{cat:"Infrastructure", q:"What is the difference between static and dynamic routing?", a:"Static routing: manually configured routes, simple but doesn't adapt to topology changes. Dynamic routing: protocols (OSPF, BGP, EIGRP) automatically discover and update routes based on network state. Static is used for: default routes, stub networks, summarization. Dynamic is used for: large/complex, frequently changing networks."},
+{cat:"Infrastructure", q:"What is policy-based routing (PBR)?", a:"PBR overrides normal routing table decisions for specific traffic based on ACL matches. Allows routing traffic based on source IP, protocol, port, or packet length rather than just destination IP. Configured with route-maps applied to interfaces with 'ip policy route-map'. Useful for traffic engineering and load balancing."},
+{cat:"Infrastructure", q:"What is NetFlow and how does it work?", a:"NetFlow collects metadata about IP traffic flows passing through a router/switch interface. A flow = packets with same (src IP, dst IP, src port, dst port, protocol, ToS, input interface). The device caches flow records and exports them to a collector (e.g., Cisco Prime, Stealthwatch) for analysis."},
+{cat:"Infrastructure", q:"What is SNMP and how does it work?", a:"SNMP (Simple Network Management Protocol) uses a manager-agent model. Agents on devices maintain a MIB (Management Information Base) of variables. Manager polls agents (GET), sets values (SET), and receives unsolicited alerts (TRAP/INFORM). SNMPv3 provides AuthPriv (authentication + encryption) for security."},
+{cat:"Infrastructure", q:"What is syslog and what are severity levels?", a:"Syslog (RFC 5424) is a standard for sending log messages from devices to a centralized server. Severity levels 0–7: Emergency, Alert, Critical, Error, Warning, Notice, Informational, Debug. Devices send logs to syslog server over UDP 514 (traditional) or TCP 6514 (TLS). Use 'logging host' and 'logging trap level' to configure."},
+{cat:"Infrastructure", q:"What is IP SLA and how is it used?", a:"IP SLA (Service Level Agreement) is a Cisco IOS feature that actively generates test traffic to measure network performance metrics (delay, jitter, packet loss, MOS). Used to verify SLAs, trigger object tracking for routing failover, and measure VoIP quality. Supports ICMP echo, UDP echo, HTTP, DNS probe operations."},
+{cat:"Infrastructure", q:"What is SPAN (Switched Port Analyzer)?", a:"SPAN copies traffic from monitored source ports/VLANs to a destination port connected to a network analyzer. Local SPAN: source and destination on same switch. RSPAN: remote SPAN, extends monitoring across switches using a dedicated RSPAN VLAN. ERSPAN: encapsulates mirrored traffic in GRE for L3 transport to remote analyzers."},
+{cat:"Infrastructure", q:"What is wireless roaming and what are its types?", a:"Roaming is a client transitioning between APs. L2 roam: client moves within same subnet/VLAN, keeps IP address. L3 roam: client moves across subnet boundaries. Cisco WLC supports L3 roaming via mobility tunneling between WLCs, preserving the client's original IP through anchor/foreign WLC relationship."},
+{cat:"Infrastructure", q:"What is a Wireless LAN Controller (WLC) and what is Split-MAC architecture?", a:"A WLC centrally manages lightweight APs (LAPs). Split-MAC: AP handles real-time 802.11 functions (beaconing, ACKs, encryption) while WLC handles management functions (authentication, association, roaming, RF management). APs and WLC communicate via CAPWAP tunnels (UDP 5246 control, 5247 data)."},
+{cat:"Infrastructure", q:"What is CAPWAP?", a:"CAPWAP (Control And Provisioning of Wireless Access Points) is the protocol used between lightweight APs and WLC. Control plane uses DTLS-encrypted UDP 5246 for AP management (configuration, firmware). Data plane uses UDP 5247 (optionally DTLS-encrypted) to tunnel client data to the WLC for centralized forwarding."},
+{cat:"Infrastructure", q:"What is FlexConnect (formerly HREAP) in wireless?", a:"FlexConnect allows lightweight APs to locally switch client traffic even when the CAPWAP tunnel to the WLC is down (standalone mode). In connected mode, APs can be configured to locally switch traffic for specific WLANs, reducing WAN bandwidth usage for branch deployments."},
+
+// ════════════════════════════════════════
+// NETWORK ASSURANCE (30 cards)
+// ════════════════════════════════════════
+{cat:"Network Assurance", q:"What is Cisco DNA Center Assurance?", a:"DNA Center Assurance uses AI/ML to provide real-time and historical network health insights. It collects telemetry from devices (SNMP, streaming telemetry, NetFlow, syslog) and provides 360° client/device views, issue identification with root cause analysis, and trend analytics for proactive network management."},
+{cat:"Network Assurance", q:"What is the difference between active and passive monitoring?", a:"Active monitoring generates synthetic test traffic to measure performance (e.g., IP SLA ICMP probes, TWAMP, Cisco 1000-series sensors). Passive monitoring analyzes actual traffic flowing through the network (NetFlow, SPAN, SNMP polling). Active is predictable but adds overhead; passive is non-intrusive but depends on real traffic."},
+{cat:"Network Assurance", q:"What is streaming telemetry and how does it differ from SNMP polling?", a:"Streaming telemetry uses a push model: devices continuously stream operational data (gRPC/gNMI, YANG-based) to collectors at configured intervals or on-change. SNMP polling is pull-based (manager queries devices). Streaming provides higher frequency, lower latency data with less overhead at scale and supports model-driven telemetry."},
+{cat:"Network Assurance", q:"What is YANG and its role in network management?", a:"YANG (Yet Another Next Generation) is a data modeling language (RFC 6020/7950) used to define the structure of configuration and operational data for network devices. YANG models are used with NETCONF/RESTCONF to provide a standardized, machine-readable way to configure and query network device state."},
+{cat:"Network Assurance", q:"What is NETCONF and how does it work?", a:"NETCONF (Network Configuration Protocol, RFC 6241) is an XML-based protocol using SSH (TCP 830) to configure and retrieve state from network devices using YANG data models. It uses operations: get, get-config, edit-config, lock, unlock, commit, delete-config. Supports candidate, running, and startup datastores."},
+{cat:"Network Assurance", q:"What is RESTCONF and how does it relate to NETCONF?", a:"RESTCONF (RFC 8040) is an HTTP-based protocol that provides a RESTful interface to NETCONF data stores using YANG models. It uses HTTP methods (GET, POST, PUT, PATCH, DELETE) and supports JSON/XML encoding. Simpler to use than NETCONF but with fewer features (no locking, no candidate datastore in base spec)."},
+{cat:"Network Assurance", q:"What is gRPC and gNMI in the context of network telemetry?", a:"gRPC is Google's high-performance RPC framework using Protocol Buffers over HTTP/2. gNMI (gRPC Network Management Interface) is an OpenConfig protocol using gRPC for configuration and telemetry. It enables high-frequency model-driven streaming telemetry from network devices to analytics platforms."},
+{cat:"Network Assurance", q:"What is NetFlow and what key data does it export?", a:"NetFlow exports flow records containing: source/destination IP, source/destination port, protocol, IP ToS, input interface, packet/byte count, flow timestamps, and TCP flags. Used for: traffic analysis, capacity planning, security anomaly detection, billing, and SLA verification."},
+{cat:"Network Assurance", q:"What is Flexible NetFlow (FNF) and how does it differ from traditional NetFlow?", a:"FNF allows customization of flow records by defining which fields constitute a flow key (match fields) and what additional data to collect (collect fields). Traditional NetFlow uses a fixed 7-tuple. FNF supports IPv6, MPLS, and non-standard fields, providing greater flexibility and efficiency."},
+{cat:"Network Assurance", q:"What is IPFIX and how does it relate to NetFlow?", a:"IPFIX (IP Flow Information Export, RFC 7011) is the IETF standard that emerged from Cisco NetFlow v9. It defines a standard format for exporting flow data. NetFlow v9 uses a similar template-based format but is Cisco-specific. IPFIX is the vendor-neutral standard supported across multi-vendor environments."},
+{cat:"Network Assurance", q:"What is Cisco Stealthwatch (now Cisco Secure Network Analytics)?", a:"Stealthwatch is a network traffic analytics platform that ingests NetFlow/IPFIX/sFlow data to provide behavioral analytics, threat detection, and network visibility. It uses machine learning to establish baselines and detect anomalies (DDoS, data exfiltration, insider threats) without requiring decryption."},
+{cat:"Network Assurance", q:"What is SNMP traps vs SNMP informs?", a:"SNMP Trap: one-way unsolicited notification from agent to manager, UDP, no acknowledgment—may be lost. SNMP Inform: like a trap but requires acknowledgment from the manager; the agent retransmits if no ACK is received within timeout. Informs are more reliable but generate more overhead."},
+{cat:"Network Assurance", q:"What are MIBs (Management Information Bases)?", a:"MIBs are hierarchical databases of objects managed via SNMP. Each object has an OID (Object Identifier) in a tree structure. Standard MIBs (RFC-defined, e.g., MIB-II for interfaces) are supported by all vendors. Enterprise MIBs are vendor-specific (Cisco's CISCO-MEMORY-POOL-MIB, etc.). Managers use MIBs to know which OIDs to poll."},
+{cat:"Network Assurance", q:"What is a baseline in network assurance and why is it important?", a:"A baseline documents normal network behavior: traffic volumes, CPU/memory utilization, interface utilization, error rates, latency at different times. Baselines enable anomaly detection (deviations from normal indicate problems or attacks) and capacity planning (identify when utilization trends toward congestion)."},
+{cat:"Network Assurance", q:"What is IP SLA and what can it measure?", a:"IP SLA generates synthetic test traffic to actively measure: ICMP echo (reachability/latency), UDP jitter (jitter/packet loss/MOS for VoIP), TCP connect (application availability), HTTP (web performance), DNS (resolution time), path jitter. Results can trigger object tracking for routing failover."},
+{cat:"Network Assurance", q:"What is TWAMP (Two-Way Active Measurement Protocol)?", a:"TWAMP (RFC 5357) measures round-trip performance (delay, jitter, packet loss) between two IP devices using a client-server model with reflected test packets. It provides more accurate two-way measurement than one-way tools and is used in service provider environments for SLA monitoring."},
+{cat:"Network Assurance", q:"What is the purpose of EEM (Embedded Event Manager)?", a:"EEM is a Cisco IOS/IOS XE framework that monitors device events (syslog messages, interface state changes, CPU thresholds, CLI commands) and triggers automated actions (run CLI commands, send notifications, reload interface). Used for self-healing automation without external controllers."},
+{cat:"Network Assurance", q:"What is a Cisco DNA Center network hierarchy?", a:"DNA Center organizes the network into a hierarchy: Global → Area → Building → Floor. Each level can have settings (credentials, AAA servers, NTP, DNS, QoS templates) applied at different scopes. This hierarchy enables scalable management and assurance across large enterprise networks."},
+{cat:"Network Assurance", q:"What is path trace in Cisco DNA Center?", a:"Path Trace is a DNA Center Assurance feature that identifies the actual path taken by traffic between two endpoints, showing each network device traversed, the policy applied at each hop, ACL results, and QoS actions. It simplifies troubleshooting complex multi-hop connectivity issues."},
+{cat:"Network Assurance", q:"What is Cisco ThousandEyes and what does it monitor?", a:"ThousandEyes is a network intelligence platform (Cisco acquisition) providing visibility into internet, cloud, and SaaS performance from agent vantage points worldwide. It monitors: BGP routing, DNS, HTTP, network path, voice/video quality. Used to troubleshoot issues beyond the enterprise network perimeter."},
+{cat:"Network Assurance", q:"What is the difference between SNMP v2c and v3 from a security perspective?", a:"SNMPv2c uses community strings (plain text passwords) for authentication with no encryption—traffic is readable. SNMPv3 introduces: USM (User-based Security Model) with authentication (HMAC-MD5/SHA) and privacy (AES/DES encryption) via AuthPriv security level, preventing eavesdropping and tampering."},
+{cat:"Network Assurance", q:"What is syslog and how is it used in network assurance?", a:"Syslog centralizes log messages from all network devices to a syslog server (e.g., Cisco Prime, Splunk). Log messages include: timestamp, facility, severity (0–7), and message text. Used for: troubleshooting, security event correlation, compliance auditing, and change tracking. Configure with 'logging host' and appropriate severity trap level."},
+{cat:"Network Assurance", q:"What is on-change vs. periodic telemetry subscription?", a:"Periodic: device streams data at fixed intervals (e.g., every 30s) regardless of whether values changed—predictable bandwidth, may include unchanged data. On-change: device streams data only when a value changes—more efficient for slowly changing data (config changes, interface state), critical for real-time event detection."},
+{cat:"Network Assurance", q:"What is Model-Driven Telemetry (MDT)?", a:"MDT uses YANG data models to define what data is collected and streamed. A subscription specifies: YANG path (what to collect), encoding (JSON, GPB/protobuf), transport (gRPC, gNMI, NETCONF), and cadence (periodic or on-change). MDT provides standardized, structured, high-frequency telemetry replacing ad-hoc SNMP/CLI scraping."},
+{cat:"Network Assurance", q:"What is the role of a collector in network telemetry?", a:"A telemetry collector receives and stores data exported by network devices (NetFlow records, gRPC telemetry streams, SNMP traps). It normalizes and forwards data to analytics/visualization platforms (Elasticsearch, InfluxDB, Grafana, Splunk, Cisco Prime, DNA Center). The collector is the first aggregation point in the telemetry pipeline."},
+{cat:"Network Assurance", q:"What is Cisco Application Visibility and Control (AVC)?", a:"AVC uses NBAR2 (Network-Based Application Recognition) to identify applications from DPI and behavioral analysis, providing application-level visibility in NetFlow records. Combined with QoS, it enables application-aware policy. AVC data in DNA Center Assurance shows top applications consuming bandwidth."},
+{cat:"Network Assurance", q:"What is NBAR (Network-Based Application Recognition)?", a:"NBAR is a Cisco deep packet inspection engine that classifies applications beyond port numbers, using protocol signatures and behavioral analysis. NBAR2 includes a Protocol Pack library of 1000+ applications (YouTube, Skype, Office 365). Used for QoS classification, AVC reporting, and application-aware SD-WAN routing."},
+{cat:"Network Assurance", q:"What is synthetic monitoring vs. real user monitoring (RUM)?", a:"Synthetic monitoring uses scripted probes (IP SLA, ThousandEyes agents) to simulate user transactions, providing consistent, proactive measurement regardless of user activity. RUM measures actual end-user experience by analyzing real user traffic (DNS Center client health, ThousandEyes endpoint agents). Both complement each other."},
+{cat:"Network Assurance", q:"What is a client health score in Cisco DNA Center?", a:"DNA Center calculates a client health score (0–10) based on multiple factors: onboarding success (DHCP, AAA, association), connectivity quality (SNR, RSSI, data rate for wireless; speed, duplex for wired), and connectivity issues (retries, packet drops). Aggregated scores help identify problematic areas of the network."},
+{cat:"Network Assurance", q:"What is the purpose of event-driven automation in network assurance?", a:"Event-driven automation triggers network responses automatically when specific conditions are detected (high CPU, interface down, security alert). Tools: Cisco EEM for device-level, DNA Center workflows for network-level, Ansible/Python for custom automation. Reduces MTTR by automating remediation without human intervention."},
+{cat:"Network Assurance", q:"What is MTTR and MTTF in the context of network assurance?", a:"MTTF (Mean Time To Failure): average time a system operates before failing—measures reliability. MTTR (Mean Time To Repair): average time to restore service after failure—measures how quickly the team recovers. Network assurance tools improve both: proactive monitoring reduces failures; automated remediation reduces MTTR."},
+
+// ════════════════════════════════════════
+// SECURITY (50 cards)
+// ════════════════════════════════════════
+{cat:"Security", q:"What is the purpose of 802.1X port-based authentication?", a:"802.1X enforces network access control by requiring endpoint authentication before granting switch/AP port access. The supplicant (client) authenticates to an authentication server (RADIUS/ISE) via the authenticator (switch/AP). Only authenticated ports/clients gain network access, preventing unauthorized device connectivity."},
+{cat:"Security", q:"What are the three roles in 802.1X authentication?", a:"Supplicant: end device with 802.1X client (e.g., Windows NativeSupplicant, Cisco AnyConnect). Authenticator: switch or AP that enforces access (passes EAP between supplicant and server). Authentication Server: RADIUS server (Cisco ISE) that validates credentials and returns access policy (VLAN, ACL, SGT)."},
+{cat:"Security", q:"What is the difference between RADIUS and TACACS+?", a:"RADIUS: open standard (RFC 2865), UDP 1812/1813, combines authentication+authorization in one response, encrypts only password, used for network access (802.1X). TACACS+: Cisco proprietary, TCP 49, separates AAA functions, encrypts entire payload, granular per-command authorization, used for device administration."},
+{cat:"Security", q:"What is Cisco ISE (Identity Services Engine)?", a:"ISE is Cisco's centralized policy and AAA platform. It provides: 802.1X authentication, device profiling (auto-detecting device types), posture assessment (endpoint compliance), guest lifecycle management, TrustSec SGT assignment, RADIUS/TACACS+ services, and integration with Active Directory and PKI."},
+{cat:"Security", q:"What is DHCP snooping and how does it work?", a:"DHCP snooping classifies switch ports as trusted (connected to DHCP servers/uplinks) or untrusted (client-facing). Untrusted ports drop DHCP server messages (OFFER, ACK) and invalid client messages (RELEASE with mismatched MAC). The snooping binding table maps IP→MAC→VLAN→port and is used by DAI and IP Source Guard."},
+{cat:"Security", q:"What is Dynamic ARP Inspection (DAI)?", a:"DAI validates ARP packets on untrusted ports against the DHCP snooping binding table. ARP replies with IP/MAC mappings not matching the binding table are dropped. Requires DHCP snooping enabled. Prevents ARP poisoning/spoofing attacks. Static ARP ACLs can be used for statically assigned hosts."},
+{cat:"Security", q:"What is IP Source Guard?", a:"IP Source Guard filters traffic on untrusted access ports, dropping packets whose source IP/MAC doesn't match the DHCP snooping binding table (or static binding). Prevents IP address spoofing—even if an attacker manually configures an IP, packets are dropped by the switch before reaching the network."},
+{cat:"Security", q:"What is port security and what are its violation modes?", a:"Port security limits MACs per port and can restrict specific MACs. Violation modes: Protect (drop excess MAC frames silently, no log), Restrict (drop + increment violation counter + syslog), Shutdown (err-disable port + SNMP trap + syslog—most secure, default). Use 'sticky' to dynamically learn and save allowed MACs."},
+{cat:"Security", q:"What is a VLAN hopping attack and mitigation?", a:"VLAN hopping exploits: (1) Switch Spoofing—attacker sends DTP frames to negotiate trunk, gaining access to all VLANs. (2) Double Tagging—attacker double-tags frame with native VLAN outer tag + target VLAN inner tag. Mitigations: disable DTP (nonegotiate), set all access ports explicitly, change native VLAN to unused ID (e.g., VLAN 999)."},
+{cat:"Security", q:"What is a Zone-Based Policy Firewall (ZBPF)?", a:"ZBPF organizes interfaces into security zones. Traffic between zones is denied by default—policy must explicitly permit inter-zone traffic. Policy uses class-maps (traffic matching) and policy-maps (actions: pass, drop, inspect). Self zone protects router's control/management traffic. More flexible and scalable than classic IOS CBAC firewall."},
+{cat:"Security", q:"What are the differences between stateless and stateful packet inspection?", a:"Stateless: evaluates each packet independently against ACL rules (src/dst IP, port, protocol). Fast but cannot track connections—return traffic must be explicitly permitted. Stateful: tracks TCP/UDP/ICMP state tables. Return traffic for established connections is automatically permitted, providing better security with simpler policy."},
+{cat:"Security", q:"What is an extended ACL and best practices for placement?", a:"Extended ACLs filter on: src/dst IP, protocol (TCP/UDP/ICMP), src/dst port, and ToS. Best practice: place extended ACLs as close to the source as possible to drop unwanted traffic early. Standard ACLs (source IP only) should be placed close to the destination to avoid blocking traffic prematurely."},
+{cat:"Security", q:"What is the difference between an IDS and an IPS?", a:"IDS: passive, sits off-path via SPAN port, detects threats and generates alerts without affecting traffic—no false-positive blocking risk but attacker traffic still reaches destination. IPS: inline, traffic passes through it, can drop/block malicious traffic in real time—provides active protection but false positives can disrupt legitimate traffic."},
+{cat:"Security", q:"What is Cisco TrustSec and SGT?", a:"TrustSec is a Cisco security architecture using 16-bit Security Group Tags (SGTs) assigned to endpoints at network ingress (by ISE via 802.1X or profiling). SGTs travel with traffic via inline tagging (Ethernet CMD header) or SGACL database lookups. Policy is enforced based on source/destination SGT pairs, decoupled from IP."},
+{cat:"Security", q:"What is MACsec (IEEE 802.1AE)?", a:"MACsec provides Layer 2 wire-rate encryption (AES-GCM-128/256) and integrity between directly connected network peers (switch-switch, switch-host). It protects against eavesdropping and tampering on LAN segments. Negotiated via MKA (MACsec Key Agreement, 802.1X-2010). Used for campus switch links and server connections."},
+{cat:"Security", q:"What is CoPP (Control Plane Policing)?", a:"CoPP uses MQC policies to rate-limit traffic sent to the router's CPU (control plane). Protects against CPU exhaustion from: routing protocol floods, ICMP sweeps, Telnet/SSH brute force, crafted packets. Traffic classes defined by protocol/ACL; each class assigned a rate limit. Critical for preventing DoS-induced routing instability."},
+{cat:"Security", q:"What is URPF (Unicast Reverse Path Forwarding)?", a:"URPF is an anti-spoofing tool verifying that the source IP of an incoming packet is reachable via the same interface it arrived on (strict mode) or any interface (loose mode). Strict mode is used on edge links; loose mode in asymmetric routing environments. Drops packets with spoofed source IPs, limiting DoS source spoofing."},
+{cat:"Security", q:"What is IPsec and its two main modes?", a:"IPsec secures IP communications via AH (authentication) and/or ESP (encryption + authentication). Transport mode: protects only the IP payload, original IP header preserved—used host-to-host. Tunnel mode: encrypts the entire original IP packet and adds a new IP header—used for VPNs between gateways."},
+{cat:"Security", q:"What is IKEv1 vs IKEv2 in IPsec?", a:"IKEv1: uses Phase 1 (ISAKMP SA, main/aggressive mode) and Phase 2 (IPsec SA, quick mode). Separate exchanges, more round trips, more complex. IKEv2: simplified (fewer messages), built-in NAT-T, EAP authentication support, MOBIKE for mobility, asymmetric authentication, more efficient. IKEv2 is preferred for modern deployments."},
+{cat:"Security", q:"What is AH vs ESP in IPsec?", a:"AH (Authentication Header, protocol 51): provides data integrity and authentication for the entire IP packet including headers. No encryption. Incompatible with NAT (NATing changes IP header, breaking AH integrity check). ESP (Encapsulating Security Payload, protocol 50): provides encryption + integrity for payload only. NAT-compatible. ESP is almost always preferred."},
+{cat:"Security", q:"What is SSL/TLS VPN and how does it compare to IPsec?", a:"SSL/TLS VPN (Cisco AnyConnect/Secure Client) uses TLS over TCP 443 or DTLS over UDP 443. Works through most firewalls (HTTPS port). Supports clientless (web browser) and full-client modes. IPsec uses UDP 500/4500 which may be blocked. SSL/TLS VPN is better for remote access; IPsec preferred for site-to-site (better performance)."},
+{cat:"Security", q:"What is posture assessment in ISE?", a:"Posture assessment checks if connecting endpoints meet security policy requirements: OS patch level, antivirus presence/signature currency, firewall status, disk encryption, specific application presence. Non-compliant endpoints can be: denied access, placed in quarantine VLAN for remediation, or granted limited access via downloadable ACL (dACL)."},
+{cat:"Security", q:"What is a rogue AP and how is it detected?", a:"A rogue AP is an unauthorized AP connected to the corporate wired network. Detected by Cisco WLC WIDS: APs scan all RF channels for unknown BSSIDs, compare detected APs against authorized list, correlate with wired switch data. Can be classified as: rogue (unknown), friendly (known external), malicious (known threat). Can be contained via over-the-air deauth frames."},
+{cat:"Security", q:"What is 802.11w (Management Frame Protection)?", a:"802.11w protects unicast and broadcast 802.11 management frames (deauth, disassociation, action) using MIC (Message Integrity Code) derived from the PMK. Prevents attackers from sending forged deauthentication frames to disconnect clients. Required for WPA3. PMF modes: Optional (negotiated), Required (mandatory)."},
+{cat:"Security", q:"What is WPA3 and its improvements over WPA2?", a:"WPA3 improvements: SAE (Simultaneous Authentication of Equals) replaces PSK, preventing offline dictionary attacks and providing forward secrecy. Mandatory PMF (802.11w). WPA3-Enterprise uses 192-bit security suite. Easy Connect (DPP) for IoT onboarding. SAE eliminates the 4-way handshake vulnerability exploited by KRACK attacks."},
+{cat:"Security", q:"What are EAP methods used with 802.1X?", a:"Common EAP methods: EAP-TLS (mutual certificate authentication—strongest, requires client cert), PEAP (server cert + password in inner tunnel—most common for users), EAP-FAST (Cisco, PAC-based—no cert required), EAP-TTLS (like PEAP but supports more inner methods). PEAP/MSCHAPv2 is most widely deployed for AD-integrated authentication."},
+{cat:"Security", q:"What is a VACL (VLAN ACL) and how does it differ from a router ACL?", a:"A VACL applies filtering to all traffic within a VLAN—including traffic that stays within the VLAN (intra-VLAN, never routed). Router ACLs only filter routed (inter-VLAN) traffic. VACLs use VLAN access-maps with action: forward, drop, or redirect. Used to filter or capture intra-VLAN traffic between hosts on the same switch."},
+{cat:"Security", q:"What is storm control and when is it needed?", a:"Storm control limits broadcast, multicast, or unicast flooding rate on a switch port (configured as % of bandwidth or pps). When exceeded: action is drop (default) or shutdown (err-disable port). Protects against broadcast storms from loops (STP failure), worms (rapid ARP flooding), or misconfigured hosts."},
+{cat:"Security", q:"What is BPDU Guard and Root Guard?", a:"BPDU Guard: disables (err-disables) a PortFast port that receives any BPDU—protects against unauthorized switch connections on access ports. Root Guard: prevents a port from becoming a root port even if a superior BPDU is received—places port in root-inconsistent blocking state, protecting the root bridge placement. Both are STP security mechanisms."},
+{cat:"Security", q:"What is Cisco Umbrella?", a:"Cisco Umbrella is a cloud-delivered security service using DNS to block malicious domains/IPs before connections are established. Features: DNS security (blocking C2, malware, phishing), Secure Web Gateway (SSL inspection, URL filtering), Cloud Firewall, CASB (cloud app visibility). Acts as the first line of defense for all internet traffic."},
+{cat:"Security", q:"What is Cisco Firepower (FTD)?", a:"Cisco Firepower Threat Defense (FTD) is a unified threat management platform combining: stateful firewall, NGIPS (Snort-based), NGFW application control (AVC), URL filtering, AMP (Advanced Malware Protection with file reputation/sandboxing), SSL/TLS decryption, and identity-based policy. Managed by FMC (Firepower Management Center) or FDM (local)."},
+{cat:"Security", q:"What is micro-segmentation and Zero Trust?", a:"Micro-segmentation enforces granular security policies between individual workloads/users, preventing lateral movement after breach. Zero Trust: 'never trust, always verify'—no implicit trust based on network location. Every access request requires verification (identity, device health, context). Implemented via TrustSec SGTs, SDA fabric, and ISE policy in Cisco architecture."},
+{cat:"Security", q:"What is AAA in network security?", a:"AAA: Authentication (who are you? — username/password, certificate, MFA), Authorization (what can you do? — per-command, VLAN, ACL assignment), Accounting (what did you do? — log all commands, session duration/bandwidth for audit and billing). Implemented via RADIUS (network access) or TACACS+ (device admin) servers."},
+{cat:"Security", q:"What is RBAC and privilege levels on Cisco devices?", a:"Privilege levels (0–15): level 1=user EXEC (limited commands), level 15=privileged EXEC (full access). Custom levels can be defined. Parser Views provide named groups of allowed commands for role-based access. TACACS+ enables per-user, per-command authorization with ISE as the policy engine, logging every command executed."},
+{cat:"Security", q:"What is NAC (Network Admission Control)?", a:"NAC validates endpoints before network admission—checking identity (802.1X), device posture (antivirus, OS patches), and compliance. Non-compliant devices are quarantined. Cisco ISE is the primary NAC platform, integrating with switches/WLCs via RADIUS to enforce dynamic access policy (VLAN assignment, dACL, SGT) based on device state."},
+{cat:"Security", q:"What is PKI (Public Key Infrastructure) and its components?", a:"PKI manages digital certificates for authentication and encryption. Components: CA (Certificate Authority—issues/signs certs), RA (Registration Authority—validates identity before CA issues cert), CRL/OCSP (certificate revocation), certificate store. Used in: EAP-TLS (wireless auth), IPsec IKEv2 (site-to-site VPN), SSL/TLS (management access), 802.1X."},
+{cat:"Security", q:"What is the purpose of TACACS+ for device administration vs. RADIUS?", a:"TACACS+ is preferred for device administration because: (1) Separates authentication, authorization, accounting—enables per-command authorization. (2) Encrypts entire payload (not just password). (3) TCP-based (more reliable). (4) Logs every command executed by admin for compliance/audit. RADIUS better for network access (802.1X) due to wider vendor support."},
+{cat:"Security", q:"What is a man-in-the-middle (MitM) attack and mitigations?", a:"MitM: attacker intercepts communication between two parties. Methods: ARP spoofing (countered by DAI), rogue DHCP (countered by DHCP snooping), rogue AP (countered by WIDS + 802.1X), SSL stripping (countered by HSTS + certificate pinning). General mitigations: encryption (TLS/IPsec), mutual authentication, certificate validation."},
+{cat:"Security", q:"What is an X.509 digital certificate and its key fields?", a:"X.509 certificates contain: Subject (entity identity—CN, O, OU), Issuer (CA name), Subject Public Key, Validity period (Not Before/Not After), Serial Number, Signature Algorithm, and CA digital signature. Extensions: Subject Alternative Name (SAN), Key Usage, Extended Key Usage, CRL Distribution Points, OCSP URL."},
+{cat:"Security", q:"What is a DoS vs. DDoS attack and mitigation strategies?", a:"DoS: single-source flood consuming target resources. DDoS: distributed botnet attack from thousands of sources—harder to block. Mitigations: upstream scrubbing (Cisco Umbrella, cloud DDoS protection), rate limiting (CoPP for control plane), RTBH (Remotely Triggered Black Hole routing for volumetric attacks), URPF (anti-spoofing)."},
+{cat:"Security", q:"What is Remotely Triggered Black Hole (RTBH) routing?", a:"RTBH is a DDoS mitigation technique where the victim network advertises a /32 route for the attacked IP via BGP with a special community tag. Upstream ISP routers route all traffic destined for that IP to Null0 (blackhole), dropping the attack traffic before it reaches the victim. Sacrifices availability of the targeted IP to protect other services."},
+{cat:"Security", q:"What is SNMPv3 and its security features?", a:"SNMPv3 security levels: noAuthNoPriv (no authentication, no encryption), authNoPriv (HMAC-MD5/SHA authentication only), authPriv (authentication + AES/DES encryption—most secure). Uses USM (User-based Security Model) with per-user credentials. Should replace SNMPv2c in all environments to prevent community string eavesdropping."},
+{cat:"Security", q:"What is the purpose of SSH vs. Telnet for device management?", a:"SSH (Secure Shell, TCP 22) encrypts the entire management session (authentication credentials and all commands), using public key cryptography. Telnet (TCP 23) transmits everything in plain text. An attacker sniffing the network can capture Telnet credentials and commands. SSH v2 is required—disable Telnet and SSHv1 on all production devices."},
+{cat:"Security", q:"What is a wildcard mask and how does it work in ACLs?", a:"Wildcard masks are the bitwise inverse of subnet masks. Bit 0 = must match, bit 1 = ignore. Example: 0.0.0.255 matches any host in a /24 (ignore last 8 bits). 0.0.0.0 = exact match (host). 255.255.255.255 = match any. In OSPF network statements, wildcards define which interfaces participate in OSPF."},
+{cat:"Security", q:"What is Cisco AMP (Advanced Malware Protection) / Secure Endpoint?", a:"Cisco AMP (now Secure Endpoint) provides endpoint malware protection using: file reputation (SHA256 hash lookup against global threat intelligence), sandboxing (dynamic analysis of unknown files in Threat Grid), retrospective detection (re-evaluates files after initial verdict changes), and device trajectory (attack path visualization for incident response)."},
+{cat:"Security", q:"What is Cisco NGFW and what features distinguish it from traditional firewalls?", a:"NGFW (Next-Generation Firewall) adds to traditional stateful firewall: application identification (NGFW layer 7 classification regardless of port), user identity integration (maps policy to users not IPs), SSL/TLS decryption and inspection, integrated IPS (Snort), URL filtering by category, and advanced malware protection. Cisco FTD is Cisco's NGFW platform."},
+{cat:"Security", q:"What is network segmentation in security design?", a:"Segmentation limits the blast radius of breaches by isolating network zones. Implementations: VLANs (L2 separation), VRFs (L3 separation, separate routing tables), SGTs/TrustSec (identity-based microsegmentation), SD-Access VNs (fabric isolation), DMZ (external-facing servers isolated from internal). Defense in depth principle."},
+{cat:"Security", q:"What is encrypted traffic analytics (ETA)?", a:"ETA (Cisco) detects malware and threats in encrypted traffic without decryption, using machine learning analysis of traffic metadata: initial data packet (IDP), sequence of packet lengths and times (SPLT), byte distribution, and TLS client hello parameters. Integrated with DNA Center and Stealthwatch for threat detection in encrypted flows."},
+{cat:"Security", q:"What is Cisco ISE profiling?", a:"ISE profiling automatically identifies device types (iPhone, IP phone, printer, IoT) based on network attributes: DHCP fingerprint, HTTP User-Agent, MAC OUI, CDP/LLDP data, SNMP, RADIUS attributes. Profiled devices receive appropriate access policy automatically, enabling context-aware policy without manual device classification."},
+{cat:"Security", q:"What is downloadable ACL (dACL) in ISE?", a:"A dACL is an ACL pushed by ISE to the authenticator (switch/WLC) via RADIUS after successful authentication. Instead of pre-configuring ACLs on every switch, ISE centrally maintains per-user/device dACLs and downloads them to the specific port after authentication, providing dynamic, identity-based traffic filtering at the access layer."},
+{cat:"Security", q:"What is guest access lifecycle in ISE?", a:"ISE guest lifecycle: Creation (sponsor creates guest account or self-registration portal), Provisioning (guest receives credentials via email/SMS/print), Authentication (guest authenticates via web portal—CWA or self-registration), Access (ISE assigns guest VLAN/ACL/SGT), Expiration (account auto-expires, access revoked). Central to secure, auditable guest onboarding."},
+
+// ════════════════════════════════════════
+// AUTOMATION (30 cards)
+// ════════════════════════════════════════
+{cat:"Automation", q:"What is network automation and why is it important?", a:"Network automation uses software to automatically provision, configure, manage, and operate network devices. Benefits: faster change deployment, reduced human error, consistent configurations, version-controlled infrastructure-as-code, scalability without proportional headcount increase, and faster troubleshooting via automated data collection."},
+{cat:"Automation", q:"What is the difference between imperative and declarative automation?", a:"Imperative automation specifies how to achieve a state step by step (e.g., 'run command X, then Y, then Z'). Declarative automation specifies the desired end state and lets the tool determine how to achieve it (e.g., Ansible desired-state modules, Terraform). Declarative is more idempotent and easier to reason about."},
+{cat:"Automation", q:"What is idempotency in network automation?", a:"An idempotent operation produces the same result regardless of how many times it is executed. If the desired state already exists, the operation makes no changes. Idempotency is critical in network automation—running a playbook multiple times should not cause unintended duplicate configurations or errors."},
+{cat:"Automation", q:"What is Ansible and how is it used in network automation?", a:"Ansible is an agentless automation platform using YAML playbooks to configure network devices via SSH/NETCONF/REST APIs. Key components: Inventory (list of managed devices), Playbooks (ordered tasks), Modules (device-specific actions—ios_config, nxos_vlan), and Roles (reusable task groups). No agent required on devices."},
+{cat:"Automation", q:"What is Puppet and how does it differ from Ansible?", a:"Puppet uses an agent-based model: a Puppet agent runs on managed nodes, periodically pulls configuration from a Puppet Master and enforces desired state. Uses declarative DSL (Puppet language). Unlike Ansible (agentless, push-based), Puppet is agent-based, pull-based, and better suited for large-scale enterprise server management."},
+{cat:"Automation", q:"What is Chef in network automation?", a:"Chef is an agent-based configuration management tool using Ruby-based DSL ('recipes' and 'cookbooks') to define and enforce infrastructure configuration. Like Puppet, agents on nodes pull config from a Chef Server. Less common in pure network automation but used in DevOps environments managing both servers and network infrastructure."},
+{cat:"Automation", q:"What is a REST API and how does it work?", a:"REST (Representational State Transfer) is an architectural style for APIs using HTTP methods: GET (retrieve), POST (create), PUT (replace), PATCH (partial update), DELETE (remove). Resources are identified by URLs. Data typically in JSON or XML. Stateless—each request contains all needed info. Used by DNA Center, Meraki, and most modern network APIs."},
+{cat:"Automation", q:"What is JSON and why is it used in network automation?", a:"JSON (JavaScript Object Notation) is a lightweight, human-readable data interchange format using key-value pairs, arrays, and nested objects. It is the dominant format for REST API payloads in network automation. Python's json library parses JSON into dictionaries/lists for programmatic processing."},
+{cat:"Automation", q:"What is YAML and how is it used in Ansible?", a:"YAML (YAML Ain't Markup Language) is a human-readable data serialization format using indentation for structure. Ansible uses YAML for: playbooks (task definitions), inventory files (host groups), variable files, and role definitions. YAML is sensitive to indentation—tabs are not allowed, only spaces."},
+{cat:"Automation", q:"What is Python's role in network automation?", a:"Python is the dominant language for network automation due to: extensive libraries (Netmiko for SSH, NAPALM for multi-vendor abstraction, Nornir for parallel execution, requests for REST APIs, pyATS/Genie for testing), readable syntax, large community, and direct integration with tools like Ansible (modules written in Python) and DNA Center SDK."},
+{cat:"Automation", q:"What is Netmiko and what does it do?", a:"Netmiko is a Python library that simplifies SSH connections to network devices. It handles: SSH session setup, send_command() for show commands, send_config_set() for configuration mode, and vendor-specific quirks (enable mode, prompts). Supports 60+ device types (Cisco IOS, NX-OS, Junos, Arista EOS, etc.)."},
+{cat:"Automation", q:"What is NAPALM (Network Automation and Programmability Abstraction Layer with Multivendor support)?", a:"NAPALM is a Python library providing a unified API for interacting with multiple network OS (IOS, IOS XE, NX-OS, EOS, JunOS). It abstracts vendor differences, enabling the same code to: get facts, get interfaces, get BGP neighbors, and load/compare/commit configuration changes across different vendors."},
+{cat:"Automation", q:"What is Nornir in network automation?", a:"Nornir is a Python automation framework (unlike Ansible, it's pure Python, not YAML-based). It enables parallel multi-threaded execution of tasks against many devices simultaneously, using an inventory system and task functions. Better suited for developers wanting full Python control vs. Ansible's YAML-based approach."},
+{cat:"Automation", q:"What is pyATS and Genie?", a:"pyATS (Python Automated Test Systems) is Cisco's testing framework for network automation. Genie is a library built on pyATS providing: parsers (convert show command output to structured data), features (abstract device configurations), and test cases. Used for automated network testing, validation, and diff-based change verification."},
+{cat:"Automation", q:"What is NETCONF and how is it used in automation?", a:"NETCONF (RFC 6241) is an XML-based protocol (SSH port 830) for programmatic device configuration using YANG models. Operations: get-config, edit-config, commit, lock. Python library 'ncclient' simplifies NETCONF interactions. Supports atomic transactions, candidate configurations, and rollback—advantages over CLI-based automation."},
+{cat:"Automation", q:"What is RESTCONF and how does it differ from NETCONF?", a:"RESTCONF (RFC 8040) exposes NETCONF datastores via REST over HTTP/HTTPS using YANG models. HTTP methods map to YANG operations: GET=get, POST=create, PUT=replace, PATCH=merge, DELETE=delete. JSON/XML encoding supported. Simpler integration with web tools/scripts. NETCONF preferred for complex transactional operations; RESTCONF for simpler REST-based automation."},
+{cat:"Automation", q:"What is a YANG model and how is it structured?", a:"YANG (RFC 6020/7950) defines hierarchical data models with: module (top-level container), container (groups related nodes), leaf (single value), leaf-list (list of same-type values), list (multiple instances keyed by leaf), choice/case (conditional structures), and grouping (reusable definitions). Used with NETCONF/RESTCONF for structured, validated configuration."},
+{cat:"Automation", q:"What is Cisco DNA Center API and what can it do?", a:"DNA Center provides a northbound REST API for network automation: device inventory management, network intent deployment, path trace queries, assurance data retrieval, template deployment, fabric provisioning (SD-Access), and event/notification subscriptions. API docs available at the DNA Center UI under Platform → Developer Toolkit → APIs."},
+{cat:"Automation", q:"What is the Cisco DevNet platform?", a:"Cisco DevNet is Cisco's developer program providing: free API documentation, sandbox labs (always-on and reservation-based), code examples, learning tracks, and certification paths (DevNet Associate/Professional/Expert). Resources at developer.cisco.com. Essential for learning Cisco APIs (DNA Center, Meraki, SD-WAN, ISE, ACI)."},
+{cat:"Automation", q:"What is Git and why is it used in network automation?", a:"Git is a distributed version control system tracking changes to code/configuration files. In network automation: stores playbooks, Python scripts, YANG configs, and device templates. Key concepts: repository, commit, branch, merge, pull request. GitOps: git repository as single source of truth for network configuration, enabling peer review and rollback."},
+{cat:"Automation", q:"What is CI/CD in the context of network automation?", a:"CI/CD (Continuous Integration/Continuous Deployment) applies software development practices to network changes. CI: automated testing of network configuration changes (syntax check, pyATS validation) on push to git. CD: automated deployment to production after tests pass. Tools: Jenkins, GitLab CI, GitHub Actions. Reduces change risk and accelerates deployment."},
+{cat:"Automation", q:"What is infrastructure as code (IaC)?", a:"IaC treats network configuration as code stored in version control systems. Configuration is defined in templates/files (Ansible YAML, Python scripts, YANG models), reviewed via pull requests, tested in CI/CD pipelines, and deployed automatically. Enables consistency, repeatability, audit trails, and rapid rollback capabilities."},
+{cat:"Automation", q:"What is Cisco NSO (Network Services Orchestrator)?", a:"Cisco NSO is a multi-vendor network automation and orchestration platform. It provides: YANG-based service models, multi-vendor NEDs (Network Element Drivers) for device abstraction, transactional configuration (commit/rollback), intent-based service provisioning, and a northbound REST API. Used for large-scale service automation in enterprise and SP."},
+{cat:"Automation", q:"What are Cisco NED (Network Element Drivers) in NSO?", a:"NEDs are NSO's device-specific adapters that translate between NSO's YANG models and device-specific protocols (CLI via SSH, NETCONF, SNMP, REST). Cisco provides NEDs for IOS, IOS XE, NX-OS, ASA, and third-party vendors. NEDs abstract device differences, allowing NSO to manage multi-vendor networks with a single service model."},
+{cat:"Automation", q:"What is the difference between a controller-based and a device-by-device automation approach?", a:"Device-by-device (Ansible/Netmiko): tools connect to each device individually, apply config, and verify—horizontal scaling requires parallel execution. Controller-based (DNA Center, NSO): changes submitted to controller which translates intent to device config and pushes to all affected devices—centralized, auditable, aware of network-wide dependencies."},
+{cat:"Automation", q:"What is a Jinja2 template in network automation?", a:"Jinja2 is a Python templating engine used in Ansible and standalone Python scripts to generate device configurations dynamically. Variables are substituted into a template ({{ variable }}), with logic ({% if %}, {% for %}) to handle conditional/repetitive config. Enables consistent config generation from a single template across many devices."},
+{cat:"Automation", q:"What is the Cisco Meraki Dashboard API?", a:"The Meraki Dashboard API is a REST API allowing programmatic management of Meraki networks. Supports: device inventory, SSID configuration, VLAN management, client monitoring, firewall rules, and traffic analytics. Uses API key authentication (X-Cisco-Meraki-API-Key header). Rate limited to 5 calls/second per org. Enables IaC for cloud-managed networks."},
+{cat:"Automation", q:"What is model-driven programmability in Cisco IOS XE?", a:"IOS XE supports programmatic access via: NETCONF (SSH+YANG), RESTCONF (HTTP+YANG), gRPC/gNMI (streaming telemetry), and On-Box Python (Guest Shell). YANG data models include: Cisco native models, OpenConfig models, and IETF standard models. Enable with 'netconf-yang' and 'restconf' global commands."},
+{cat:"Automation", q:"What is Cisco Guest Shell?", a:"Guest Shell is a lightweight Linux container running on IOS XE devices, providing an on-box Python execution environment. Used to: run Python scripts locally on the device, interact with IOS XE via NETCONF or EEM, and integrate with external systems. Enables event-driven automation where the device itself triggers and executes scripts."},
+{cat:"Automation", q:"What is an Ansible inventory and how is it organized?", a:"An Ansible inventory defines managed hosts and groups. Formats: INI (simple text), YAML (structured), or dynamic (script/plugin generating inventory from CMDB/API). Groups can be nested. Host variables (host_vars/) and group variables (group_vars/) store device-specific or group-wide data (IP, credentials, OS type) for use in playbooks."},
+{cat:"Automation", q:"What is the difference between Ansible ad-hoc commands and playbooks?", a:"Ad-hoc commands: single-task, one-line commands run from CLI (ansible all -m ios_command -a 'commands=show version'). Quick for simple tasks. Playbooks: YAML files defining ordered multi-task workflows with variables, conditionals, loops, and handlers. Reusable, version-controllable, and suitable for complex multi-step automation."},
+{cat:"Automation", q:"What is the role of APIs in network automation?", a:"APIs enable programmatic interaction with network devices and controllers. Types: Southbound APIs (controller to devices—NETCONF, OpenFlow, gNMI), Northbound APIs (apps to controller—REST/JSON), Eastbound/Westbound (controller-to-controller). APIs provide structured, machine-readable access replacing error-prone screen scraping of CLI output."},
+];
+
+let deck = [...ALL_CARDS];
+let currentIndex = 0;
+let isFlipped = false;
+let seen = new Set();
+let knownSet = new Set();
+let reviewSet = new Set();
+let activeFilter = 'all';
+
+function getCatClass(cat) {
+  return 'cat-' + cat.replace(/\s/g, '');
+}
+
+function filterCards(filter, btn) {
+  document.querySelectorAll('.domain-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  activeFilter = filter;
+
+  if (filter === 'all') {
+    deck = [...ALL_CARDS];
+    document.getElementById('deckLabel').textContent = 'ALL CARDS';
+  } else if (filter === 'review') {
+    deck = ALL_CARDS.filter((_, i) => reviewSet.has(i));
+    document.getElementById('deckLabel').textContent = 'NEEDS REVIEW';
+  } else if (filter === 'know') {
+    deck = ALL_CARDS.filter((_, i) => knownSet.has(i));
+    document.getElementById('deckLabel').textContent = 'KNOW IT';
+  } else {
+    deck = ALL_CARDS.filter(c => c.cat === filter);
+    document.getElementById('deckLabel').textContent = filter.toUpperCase();
+  }
+
+  currentIndex = 0;
+  isFlipped = false;
+  document.getElementById('cardInner').classList.remove('flipped');
+  updateCard();
+}
+
+function updateCard() {
+  if (deck.length === 0) {
+    document.getElementById('cardQ').textContent = 'No cards in this filter yet.';
+    document.getElementById('cardA').textContent = '—';
+    document.getElementById('cardCat').textContent = '—';
+    document.getElementById('cardCat').className = 'card-category';
+    document.getElementById('cardNum').textContent = '0';
+    document.getElementById('cardTotal').textContent = '0';
+    document.getElementById('progressFill').style.width = '0%';
+    document.getElementById('prevBtn').disabled = true;
+    document.getElementById('nextBtn').disabled = true;
+    return;
+  }
+  const card = deck[currentIndex];
+  document.getElementById('cardQ').textContent = card.q;
+  document.getElementById('cardA').textContent = card.a;
+  document.getElementById('cardCat').textContent = card.cat.toUpperCase();
+  document.getElementById('cardCat').className = 'card-category ' + getCatClass(card.cat);
+  document.getElementById('cardNum').textContent = currentIndex + 1;
+  document.getElementById('cardTotal').textContent = deck.length;
+  document.getElementById('progressFill').style.width = ((currentIndex+1)/deck.length*100)+'%';
+  document.getElementById('prevBtn').disabled = currentIndex === 0;
+  document.getElementById('nextBtn').disabled = currentIndex === deck.length - 1;
+  const globalIdx = ALL_CARDS.indexOf(card);
+  seen.add(globalIdx);
+  updateStats();
+}
+
+function flipCard() {
+  isFlipped = !isFlipped;
+  document.getElementById('cardInner').classList.toggle('flipped', isFlipped);
+}
+function nextCard() {
+  if (currentIndex < deck.length - 1) {
+    currentIndex++; isFlipped = false;
+    document.getElementById('cardInner').classList.remove('flipped');
+    animateCard(); updateCard();
+  }
+}
+function prevCard() {
+  if (currentIndex > 0) {
+    currentIndex--; isFlipped = false;
+    document.getElementById('cardInner').classList.remove('flipped');
+    animateCard(); updateCard();
+  }
+}
+function shuffleCards() {
+  for (let i = deck.length-1; i > 0; i--) {
+    const j = Math.floor(Math.random()*(i+1));
+    [deck[i],deck[j]] = [deck[j],deck[i]];
+  }
+  currentIndex = 0; isFlipped = false;
+  document.getElementById('cardInner').classList.remove('flipped');
+  animateCard(); updateCard();
+}
+function animateCard() {
+  const s = document.getElementById('cardScene');
+  s.classList.add('animating');
+  setTimeout(() => s.classList.remove('animating'), 220);
+}
+function markCard(type) {
+  const card = deck[currentIndex];
+  const gi = ALL_CARDS.indexOf(card);
+  if (type === 'know') { knownSet.add(gi); reviewSet.delete(gi); }
+  else { reviewSet.add(gi); knownSet.delete(gi); }
+  updateStats();
+  if (currentIndex < deck.length-1) nextCard();
+}
+function updateStats() {
+  document.getElementById('statKnow').textContent = knownSet.size;
+  document.getElementById('statReview').textContent = reviewSet.size;
+  document.getElementById('statSeen').textContent = seen.size;
+  document.getElementById('statPct').textContent = Math.round(seen.size/ALL_CARDS.length*100)+'%';
+}
+document.addEventListener('keydown', e => {
+  if (e.key==='ArrowRight') nextCard();
+  else if (e.key==='ArrowLeft') prevCard();
+  else if (e.key===' '||e.key==='Enter') { e.preventDefault(); flipCard(); }
+  else if (e.key==='k'||e.key==='K') markCard('know');
+  else if (e.key==='r'||e.key==='R') markCard('review');
+});
+updateCard();
+</script>
+</body>
+</html>
